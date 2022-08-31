@@ -1,12 +1,12 @@
 package com.congeer.game.bean;
 
-import io.vertx.codegen.annotations.DataObject;
+import com.congeer.game.strategy.model.PlayerData;
 import io.vertx.core.json.JsonObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-@DataObject(generateConverter = true)
 public class Player {
 
     public Player() {
@@ -17,13 +17,17 @@ public class Player {
         this.socketId = socketId;
     }
 
-    public Player(JsonObject json) {
-        PlayerConverter.fromJson(json, this);
-    }
-
     private String id;
 
     private String socketId;
+
+    private boolean isPlayer;
+
+    private boolean isOwner;
+
+    private boolean isLock;
+
+    private int index = -1;
 
     private List<JsonObject> configList = new ArrayList<>();
 
@@ -45,8 +49,31 @@ public class Player {
         return this;
     }
 
-    public List<JsonObject> getConfigList() {
-        return configList;
+    public boolean isPlayer() {
+        return isPlayer;
+    }
+
+    public Player setPlayer(boolean player) {
+        isPlayer = player;
+        return this;
+    }
+
+    public boolean isOwner() {
+        return isOwner;
+    }
+
+    public Player setOwner(boolean owner) {
+        isOwner = owner;
+        return this;
+    }
+
+    public boolean isLock() {
+        return isLock;
+    }
+
+    public Player setLock(boolean lock) {
+        isLock = lock;
+        return this;
     }
 
     public Player setConfigList(List<JsonObject> configList) {
@@ -54,8 +81,33 @@ public class Player {
         return this;
     }
 
+    public int getIndex() {
+        return index;
+    }
+
+    public Player setIndex(int index) {
+        this.index = index;
+        return this;
+    }
+
+    public List<JsonObject> getConfigList() {
+        return configList;
+    }
+
+    public Player resetConfig() {
+        this.configList = new CopyOnWriteArrayList<>();
+        return this;
+    }
+
     public void clearPlayer() {
         this.socketId = null;
+        if (!isLock) {
+            this.id = null;
+        }
+    }
+
+    public PlayerData baseInfo() {
+        return new PlayerData().setOwner(isOwner).setPlayer(isPlayer).setIndex(index);
     }
 
 }

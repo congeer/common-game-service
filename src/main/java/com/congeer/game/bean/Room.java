@@ -1,49 +1,37 @@
 package com.congeer.game.bean;
 
 
-import io.vertx.codegen.annotations.DataObject;
+import com.congeer.game.strategy.model.RoomData;
 import io.vertx.core.json.JsonObject;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-@DataObject(generateConverter = true)
 public class Room {
-
-    public Room() {
-    }
 
     public Room(String id) {
         this.id = id;
     }
 
-    public Room(JsonObject json) {
-        RoomConverter.fromJson(json, this);
-    }
-
-
-    private String id;
+    private final String id;
 
     private Player owner;
 
     private int maxPlayer = 2;
 
-    private List<Player> players = new ArrayList<>();
+    private long lastUpdateTime;
 
-    private List<Player> viewers = new ArrayList<>();
+    private final List<Player> players = new CopyOnWriteArrayList<>();
 
-    private List<JsonObject> actionList = new ArrayList<>();
+    private final List<Player> viewers = new CopyOnWriteArrayList<>();
 
-    private List<JsonObject> configList = new ArrayList<>();
+    private List<JsonObject> actionList = new CopyOnWriteArrayList<>();
+
+    private List<JsonObject> configList = new CopyOnWriteArrayList<>();
 
     public String getId() {
         return id;
-    }
-
-    public Room setId(String id) {
-        this.id = id;
-        return this;
     }
 
     public Player getOwner() {
@@ -61,39 +49,50 @@ public class Room {
 
     public Room setMaxPlayer(int maxPlayer) {
         this.maxPlayer = maxPlayer;
-        for (int i = players.size(); i < maxPlayer; i++) {
-            players.add(new Player());
-        }
-        for (int i = maxPlayer; i < players.size(); i++) {
-            players.remove(i);
-        }
         return this;
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public Room setLastUpdateTime(long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+        return this;
+    }
+
+    /**
+     * 设置房间的初始化玩家信息
+     */
+    public void configPlayer() {
+        players.removeIf(next -> next.getIndex() >= maxPlayer);
+        for (int i = players.size(); i < maxPlayer; i++) {
+            Player player = new Player();
+            player.setPlayer(true);
+            player.setIndex(i);
+            players.add(player);
+        }
     }
 
     public List<Player> getPlayers() {
         return players;
     }
 
-    public Room setPlayers(List<Player> players) {
-        this.players = players;
-        return this;
+    public Player getPlayer(String socketId) {
+        return players.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst().orElse(null);
     }
 
     public List<Player> getViewers() {
         return viewers;
     }
 
-    public Room setViewers(List<Player> viewers) {
-        this.viewers = viewers;
-        return this;
-    }
 
     public List<JsonObject> getActionList() {
         return actionList;
     }
 
-    public Room setActionList(List<JsonObject> actionList) {
-        this.actionList = actionList;
+    public Room resetActionList() {
+        this.actionList = new CopyOnWriteArrayList<>();
         return this;
     }
 
@@ -101,41 +100,39 @@ public class Room {
         return configList;
     }
 
-    public Room setConfigList(List<JsonObject> configList) {
-        this.configList = configList;
-        return this;
-    }
-
     public List<Player> getAll() {
-        List<Player> ret = new ArrayList<>();
+        List<Player> ret = new CopyOnWriteArrayList<>();
         ret.addAll(players);
         ret.addAll(viewers);
         return ret;
     }
 
     public void reset() {
-        this.actionList = new ArrayList<>();
+        this.actionList = new CopyOnWriteArrayList<>();
     }
 
-    public int playerLeave(String socketId) {
-        int ret = 0;
-        if (socketId.equals(owner.getSocketId())) {
-            owner.setSocketId(null);
-            ret += 1;
+    public Player playerLeave(String socketId) {
+        Optional<Player> player = players.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst();
+        Optional<Player> viewer = viewers.stream().filter(v -> v.getSocketId().equals(socketId)).findFirst();
+        if (player.isPresent()) {
+            player.get().clearPlayer();
+            return player.get();
+        } else if (viewer.isPresent()) {
+            viewers.remove(viewer.get());
+            return viewer.get();
         }
-        if (players.stream().anyMatch(v -> socketId.equals(v.getSocketId()))) {
-            players.stream().filter(v -> socketId.equals(v.getSocketId())).forEach(Player::clearPlayer);
-            ret += 2;
-        } else if (viewers.stream().anyMatch(v -> v.getSocketId().equals(socketId))) {
-            viewers = viewers.stream().filter(v -> !v.getSocketId().equals(socketId)).collect(Collectors.toList());
-            ret += 4;
-        }
-        return ret;
+        return null;
     }
 
     public void clearConfig() {
-        players.forEach(v -> v.setConfigList(new ArrayList<>()));
-        configList = new ArrayList<>();
+        players.forEach(Player::resetConfig);
+        configList = new CopyOnWriteArrayList<>();
+    }
+
+    public RoomData baseInfo() {
+        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer);
+        room.setPlayers(players.stream().map(Player::baseInfo).toList());
+        return room;
     }
 
 }
