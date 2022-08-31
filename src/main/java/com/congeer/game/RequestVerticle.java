@@ -6,6 +6,7 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.Router;
 
 public class RequestVerticle extends AbstractVerticle {
 
@@ -13,6 +14,14 @@ public class RequestVerticle extends AbstractVerticle {
     public void start(Promise<Void> startPromise) throws Exception {
         System.out.println(Thread.currentThread().getName() + ", Start Worker...");
         EventBus eventBus = getVertx().eventBus();
+        Router router = Router.router(getVertx());
+        router.get("/game/status").handler(handler -> {
+            eventBus.request("GAME_REQ/STATUS", null, resp -> {
+                if (resp.succeeded()) {
+                    handler.end(resp.result().body().toString());
+                }
+            });
+        });
         getVertx().createHttpServer().webSocketHandler(webSocket -> {
             if (!webSocket.path().equals("/game/ws")) {
                 webSocket.reject();
@@ -30,7 +39,7 @@ public class RequestVerticle extends AbstractVerticle {
                 Message message = new Message().setType(RoomEventEnum.LEAVE_ROOM.getCode()).setSocketId(socketId);
                 eventBus.<Message>send("GAME_EVENT/" + message.getType(), message);
             });
-        }).listen(8888, http -> {
+        }).requestHandler(router).listen(8888, http -> {
             if (http.succeeded()) {
                 startPromise.complete();
                 System.out.println("HTTP server started on port 8888");

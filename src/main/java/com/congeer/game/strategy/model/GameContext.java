@@ -76,4 +76,11 @@ public class GameContext {
         Launcher.getVert().eventBus().send(socketId, JsonObject.mapFrom(data).toBuffer());
     }
 
+    public GameStatus getStatus() {
+        GameStatus status = new GameStatus();
+        status.setRoomCount(roomMap.size());
+        status.setSocketCount(socketRoom.size());
+        return status;
+    }
+
 }

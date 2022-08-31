@@ -5,6 +5,7 @@ import com.congeer.game.strategy.enums.RoomEventEnum;
 import com.congeer.game.strategy.model.GameContext;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
+import io.vertx.core.json.JsonObject;
 
 public class GameVerticle extends AbstractVerticle {
 
@@ -22,6 +23,10 @@ public class GameVerticle extends AbstractVerticle {
             String address = "GAME_EVENT/" + value.getCode();
             eventBus.consumer(address, handler);
         }
+
+        eventBus.consumer("GAME_REQ/STATUS", handler -> {
+            handler.reply(JsonObject.mapFrom(GAME_CONTEXT.getStatus()));
+        });
     }
 
 }
