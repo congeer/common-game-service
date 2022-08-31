@@ -8,6 +8,8 @@ public class RoomData {
 
     private Integer maxPlayer;
 
+    private Integer playerCount;
+
     private List<PlayerData> players;
 
     public String getId() {
@@ -25,6 +27,15 @@ public class RoomData {
 
     public RoomData setMaxPlayer(Integer maxPlayer) {
         this.maxPlayer = maxPlayer;
+        return this;
+    }
+
+    public Integer getPlayerCount() {
+        return playerCount;
+    }
+
+    public RoomData setPlayerCount(Integer playerCount) {
+        this.playerCount = playerCount;
         return this;
     }
 

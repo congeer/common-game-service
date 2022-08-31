@@ -130,7 +130,8 @@ public class Room {
     }
 
     public RoomData baseInfo() {
-        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer);
+        long count = players.stream().filter(v -> v.getSocketId() != null).count();
+        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer).setPlayerCount((int) count);
         room.setPlayers(players.stream().map(Player::baseInfo).toList());
         return room;
     }

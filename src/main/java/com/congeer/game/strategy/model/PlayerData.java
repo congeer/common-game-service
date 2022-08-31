@@ -1,16 +1,18 @@
 package com.congeer.game.strategy.model;
 
-import lombok.Data;
-
 public class PlayerData {
 
     private String id;
 
-    private boolean isPlayer;
+    private boolean player;
 
-    private boolean isOwner;
+    private boolean owner;
 
-    private boolean isLock;
+    private boolean lock;
+
+    private boolean create;
+
+    private boolean online;
 
     private int index = -1;
 
@@ -24,29 +26,29 @@ public class PlayerData {
     }
 
     public boolean isPlayer() {
-        return isPlayer;
+        return player;
     }
 
     public PlayerData setPlayer(boolean player) {
-        isPlayer = player;
+        this.player = player;
         return this;
     }
 
     public boolean isOwner() {
-        return isOwner;
+        return owner;
     }
 
     public PlayerData setOwner(boolean owner) {
-        isOwner = owner;
+        this.owner = owner;
         return this;
     }
 
     public boolean isLock() {
-        return isLock;
+        return lock;
     }
 
     public PlayerData setLock(boolean lock) {
-        isLock = lock;
+        this.lock = lock;
         return this;
     }
 
@@ -56,6 +58,24 @@ public class PlayerData {
 
     public PlayerData setIndex(int index) {
         this.index = index;
+        return this;
+    }
+
+    public boolean isCreate() {
+        return create;
+    }
+
+    public PlayerData setCreate(boolean create) {
+        this.create = create;
+        return this;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public PlayerData setOnline(boolean online) {
+        this.online = online;
         return this;
     }
 

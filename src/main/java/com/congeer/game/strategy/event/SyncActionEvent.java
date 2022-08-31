@@ -4,7 +4,7 @@ import com.congeer.game.bean.Message;
 import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
 
-import static com.congeer.game.strategy.enums.ClientEventEnum.*;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_ACTION;
 
 public class SyncActionEvent extends GameEvent {
 

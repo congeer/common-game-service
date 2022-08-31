@@ -1,8 +1,7 @@
 package com.congeer.game;
 
-import com.congeer.game.bean.GameMessageCodec;
 import com.congeer.game.bean.Message;
-import com.congeer.game.bean.MessageConverter;
+import com.congeer.game.strategy.enums.RoomEventEnum;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
@@ -23,13 +22,13 @@ public class RequestVerticle extends AbstractVerticle {
                 JsonObject entries = handler.toJsonObject();
                 entries.put("socketId", socketId);
                 Message message = entries.mapTo(Message.class);
-                System.out.println(message);
                 eventBus.<Message>send("GAME_EVENT/" + message.getType(), message);
             }).closeHandler(handler -> {
             }).exceptionHandler(handler -> {
             }).drainHandler(handler -> {
             }).endHandler(handler -> {
-                eventBus.send("websocket.end", socketId);
+                Message message = new Message().setType(RoomEventEnum.LEAVE_ROOM.getCode()).setSocketId(socketId);
+                eventBus.<Message>send("GAME_EVENT/" + message.getType(), message);
             });
         }).listen(8888, http -> {
             if (http.succeeded()) {

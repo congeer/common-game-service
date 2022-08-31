@@ -22,7 +22,6 @@ public class GameVerticle extends AbstractVerticle {
             String address = "GAME_EVENT/" + value.getCode();
             eventBus.consumer(address, handler);
         }
-        eventBus.<String>consumer("websocket.end", handler -> GAME_CONTEXT.removePlayer(handler.body()));
     }
 
 }

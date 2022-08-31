@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.congeer.game.strategy.enums.ClientEventEnum.LEAVE_PLAYER;
-
 public class GameContext {
 
     private final Map<String, Room> roomMap = new ConcurrentHashMap<>();
@@ -52,17 +50,18 @@ public class GameContext {
         return roomMap.get(roomId);
     }
 
-    public Player getEmptyPlayer(String roomId) {
+    public Player getEmptyPlayer(String roomId, String playerId) {
         Room room = getRoom(roomId);
+        Optional<Player> has = room.getPlayers().stream().filter(v -> playerId.equals(v.getId())).findFirst();
+        if (has.isPresent()) {
+            return has.get();
+        }
         Optional<Player> first = room.getPlayers().stream().filter(v -> (!v.isLock() && v.getSocketId() == null)
             || v.getId() == null).findFirst();
         return first.orElse(null);
     }
 
-    public void removePlayer(String socketId) {
-        Room room = getRoomBySocketId(socketId);
-        Player player = room.playerLeave(socketId);
-        radio(socketId, new Message(LEAVE_PLAYER, player));
+    public void removeSocket(String socketId) {
         socketRoom.remove(socketId);
     }
 

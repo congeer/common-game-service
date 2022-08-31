@@ -7,7 +7,11 @@ import com.congeer.game.strategy.GameEvent;
 import com.congeer.game.strategy.model.AddRoomData;
 import io.vertx.core.json.JsonObject;
 
-import static com.congeer.game.strategy.enums.ClientEventEnum.*;
+import static com.congeer.game.strategy.enums.ClientEventEnum.CONNECTED;
+import static com.congeer.game.strategy.enums.ClientEventEnum.JOIN_PLAYER;
+import static com.congeer.game.strategy.enums.ClientEventEnum.ROOM_INFO;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_ACTION;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
 
 public class AddRoomEvent extends GameEvent {
 
@@ -23,11 +27,11 @@ public class AddRoomEvent extends GameEvent {
             Player player = createOwnerPlayer(socketId, playerId);
             room.setOwner(player).getPlayers().add(player);
             // 通知玩家自己的属性
-            Message ret = new Message(CONNECTED, player.baseInfo());
+            Message ret = new Message(CONNECTED, player.baseInfo().setCreate(true));
             gameContext.notice(socketId, ret);
             return;
         }
-        Player player = gameContext.getEmptyPlayer(roomId);
+        Player player = gameContext.getEmptyPlayer(roomId, playerId);
         Room room = gameContext.getRoomBySocketId(socketId);
         if (player != null) {
             player.setId(playerId).setSocketId(socketId).setLock(true);

@@ -21,11 +21,11 @@ public class Player {
 
     private String socketId;
 
-    private boolean isPlayer;
+    private boolean player;
 
-    private boolean isOwner;
+    private boolean owner;
 
-    private boolean isLock;
+    private boolean lock;
 
     private int index = -1;
 
@@ -50,29 +50,29 @@ public class Player {
     }
 
     public boolean isPlayer() {
-        return isPlayer;
+        return player;
     }
 
     public Player setPlayer(boolean player) {
-        isPlayer = player;
+        this.player = player;
         return this;
     }
 
     public boolean isOwner() {
-        return isOwner;
+        return owner;
     }
 
     public Player setOwner(boolean owner) {
-        isOwner = owner;
+        this.owner = owner;
         return this;
     }
 
     public boolean isLock() {
-        return isLock;
+        return lock;
     }
 
     public Player setLock(boolean lock) {
-        isLock = lock;
+        this.lock = lock;
         return this;
     }
 
@@ -101,13 +101,14 @@ public class Player {
 
     public void clearPlayer() {
         this.socketId = null;
-        if (!isLock) {
+        if (!lock) {
             this.id = null;
         }
     }
 
     public PlayerData baseInfo() {
-        return new PlayerData().setOwner(isOwner).setPlayer(isPlayer).setIndex(index);
+        return new PlayerData().setId(id).setOnline(socketId != null).setLock(lock).setOwner(owner).setPlayer(player)
+            .setIndex(index);
     }
 
 }
