@@ -6,6 +6,7 @@ import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import io.vertx.core.json.JsonObject;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -67,12 +68,16 @@ public class GameContext {
 
     public void radio(String senderSocketId, Message msg) {
         Room room = getRoomBySocketId(senderSocketId);
-        room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !v.getSocketId().equals(senderSocketId))
-            .forEach(v -> notice(v.getSocketId(), msg));
+        room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !v.getSocketId()
+            .equals(senderSocketId)).forEach(v -> notice(v.getSocketId(), msg));
     }
 
     public void notice(String socketId, Message data) {
-        System.out.println(data);
+        JsonObject log = new JsonObject();
+        log.put("time", LocalDateTime.now());
+        log.put("type", "SEND_TO_CLIENT");
+        log.put("data", data);
+        System.out.println(log);
         Launcher.getVert().eventBus().send(socketId, JsonObject.mapFrom(data).toBuffer());
     }
 
