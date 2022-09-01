@@ -11,8 +11,8 @@ public class ResetActionEvent extends GameEvent {
     @Override
     protected void handle(Message body) {
         Room room = gameContext.getRoom(body.getSocketId());
-        room.clearConfig();
-        gameContext.radio(body.getSocketId(), new Message(RESET_ACTION));
+        room.resetActionList();
+        gameContext.radio(body.getSocketId(), new Message(RESET_ACTION), false);
     }
 
 }
