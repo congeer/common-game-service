@@ -67,8 +67,12 @@ public class GameContext {
     }
 
     public void radio(String senderSocketId, Message msg) {
+        radio(senderSocketId, msg, true);
+    }
+
+    public void radio(String senderSocketId, Message msg, boolean excludeSelf) {
         Room room = getRoomBySocketId(senderSocketId);
-        room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !v.getSocketId()
+        room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !excludeSelf || !v.getSocketId()
             .equals(senderSocketId)).forEach(v -> notice(v.getSocketId(), msg));
     }
 

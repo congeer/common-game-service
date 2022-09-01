@@ -1,15 +1,7 @@
 package com.congeer.game.strategy.enums;
 
 import com.congeer.game.strategy.GameEvent;
-import com.congeer.game.strategy.event.AddRoomEvent;
-import com.congeer.game.strategy.event.ConfigRoomEvent;
-import com.congeer.game.strategy.event.HealthEvent;
-import com.congeer.game.strategy.event.LeaveRoomEvent;
-import com.congeer.game.strategy.event.LockPlayerEvent;
-import com.congeer.game.strategy.event.RequestActionEvent;
-import com.congeer.game.strategy.event.ResetActionEvent;
-import com.congeer.game.strategy.event.SyncActionEvent;
-import com.congeer.game.strategy.event.UnlockPlayerEvent;
+import com.congeer.game.strategy.event.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -26,6 +18,7 @@ public enum RoomEventEnum {
     REQUEST_ACTION("REQUEST_ACTION", "请求动作", RequestActionEvent.class),
     LOCK_PLAYER("LOCK_PLAYER", "锁定玩家位置", LockPlayerEvent.class),
     UNLOCK_PLAYER("UNLOCK_PLAYER", "解锁玩家位置", UnlockPlayerEvent.class),
+    SHUFFLE_REQUEST("SHUFFLE_REQUEST", "洗牌", ShuffleEvent.class),
     ;
 
 

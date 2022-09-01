@@ -14,6 +14,7 @@ public enum ClientEventEnum {
     LEAVE_PLAYER("LEAVE_PLAYER", "离开玩家"),
     JOIN_PLAYER("JOIN_PLAYER", "加入玩家"),
     RESET_ACTION("RESET_ACTION", "重置动作列表"),
+    SHUFFLE_RESULT("SHUFFLE_RESULT", "洗牌结果"),
     ;
 
     private final String code;
