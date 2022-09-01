@@ -125,7 +125,7 @@ public class Room {
 
     public Player playerLeave(String socketId) {
         Optional<Player> player = players.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst();
-        Optional<Player> viewer = viewers.stream().filter(v -> v.getSocketId().equals(socketId)).findFirst();
+        Optional<Player> viewer = viewers.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst();
         if (player.isPresent()) {
             player.get().clearPlayer();
             return player.get();

@@ -17,8 +17,10 @@ public class LeaveRoomEvent extends GameEvent {
             return;
         }
         Player player = room.playerLeave(socketId);
-        gameContext.radio(socketId, new Message(LEAVE_PLAYER, player.baseInfo()));
         gameContext.removeSocket(socketId);
+        if (player != null) {
+            gameContext.radio(socketId, new Message(LEAVE_PLAYER, player.baseInfo()));
+        }
     }
 
 }
