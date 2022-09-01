@@ -24,9 +24,8 @@ public class GameVerticle extends AbstractVerticle {
             eventBus.consumer(address, handler);
         }
 
-        eventBus.consumer("GAME_REQ/STATUS", handler -> {
-            handler.reply(JsonObject.mapFrom(GAME_CONTEXT.getStatus()));
-        });
+        eventBus.consumer("GAME_REQ/STATUS", handler -> handler.reply(JsonObject.mapFrom(GAME_CONTEXT.getStatus())));
+        eventBus.consumer("GAME_REQ/ROOM", handler -> handler.reply(JsonObject.mapFrom(GAME_CONTEXT.getStatus())));
     }
 
 }

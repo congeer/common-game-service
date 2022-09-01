@@ -1,10 +1,16 @@
 package com.congeer.game.strategy.model;
 
+import com.congeer.game.bean.Room;
+
+import java.util.List;
+
 public class GameStatus {
 
     private int roomCount;
 
     private int socketCount;
+
+    private List<Room> roomList;
 
     public int getRoomCount() {
         return roomCount;
@@ -21,6 +27,15 @@ public class GameStatus {
 
     public GameStatus setSocketCount(int socketCount) {
         this.socketCount = socketCount;
+        return this;
+    }
+
+    public List<Room> getRoomList() {
+        return roomList;
+    }
+
+    public GameStatus setRoomList(List<Room> roomList) {
+        this.roomList = roomList;
         return this;
     }
 

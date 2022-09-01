@@ -67,7 +67,7 @@ public class GameContext {
 
     public void radio(String senderSocketId, Message msg) {
         Room room = getRoomBySocketId(senderSocketId);
-        room.getAll().stream().filter(v -> v.getSocketId() != null).filter(v -> !v.getSocketId().equals(senderSocketId))
+        room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !v.getSocketId().equals(senderSocketId))
             .forEach(v -> notice(v.getSocketId(), msg));
     }
 
@@ -80,6 +80,7 @@ public class GameContext {
         GameStatus status = new GameStatus();
         status.setRoomCount(roomMap.size());
         status.setSocketCount(socketRoom.size());
+        status.setRoomList(roomMap.values().stream().toList());
         return status;
     }
 

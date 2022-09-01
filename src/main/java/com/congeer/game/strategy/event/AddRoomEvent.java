@@ -40,7 +40,8 @@ public class AddRoomEvent extends GameEvent {
             room.getViewers().add(player);
         }
         // 告诉玩家自己的状态
-        gameContext.notice(socketId, new Message(CONNECTED, player.baseInfo()));
+        gameContext.notice(socketId, new Message(CONNECTED, player.baseInfo()
+            .setCreate(player.isOwner() && !room.isConfig())));
         // 告诉玩家其他玩家状态
         gameContext.notice(socketId, new Message(ROOM_INFO, room.baseInfo()));
         // 通知其他人有玩家加入

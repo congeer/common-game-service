@@ -38,6 +38,7 @@ public class ConfigRoomEvent extends GameEvent {
             room.getConfigList().add(config);
             gameContext.radio(socketId, new Message(SYNC_CONFIG, config));
         }
+        room.setConfig(true);
     }
 
 }

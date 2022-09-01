@@ -12,6 +12,7 @@ public class Room {
 
     public Room(String id) {
         this.id = id;
+        this.lastUpdateTime = System.nanoTime();
     }
 
     private final String id;
@@ -21,6 +22,8 @@ public class Room {
     private int maxPlayer = 2;
 
     private long lastUpdateTime;
+
+    private boolean config;
 
     private final List<Player> players = new CopyOnWriteArrayList<>();
 
@@ -58,6 +61,15 @@ public class Room {
 
     public Room setLastUpdateTime(long lastUpdateTime) {
         this.lastUpdateTime = lastUpdateTime;
+        return this;
+    }
+
+    public boolean isConfig() {
+        return config;
+    }
+
+    public Room setConfig(boolean config) {
+        this.config = config;
         return this;
     }
 
@@ -100,7 +112,7 @@ public class Room {
         return configList;
     }
 
-    public List<Player> getAll() {
+    public List<Player> allPlayer() {
         List<Player> ret = new CopyOnWriteArrayList<>();
         ret.addAll(players);
         ret.addAll(viewers);
@@ -127,6 +139,7 @@ public class Room {
     public void clearConfig() {
         players.forEach(Player::resetConfig);
         configList = new CopyOnWriteArrayList<>();
+        config = false;
     }
 
     public RoomData baseInfo() {
