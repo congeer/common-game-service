@@ -13,12 +13,13 @@ public enum RoomEventEnum {
     ADD_ROOM("ADD_ROOM", "进入房间", AddRoomEvent.class),
     LEAVE_ROOM("LEAVE_ROOM", "离开房间", LeaveRoomEvent.class),
     CONFIG_ROOM("CONFIG_ROOM", "设置房间", ConfigRoomEvent.class),
-    RESET_ACTION("RESET_ACTION", "重置动作列表", ResetActionEvent.class),
+    RESET_ROOM("RESET_ROOM", "重置房间", ResetRoomEvent.class),
     SYNC_ACTION("SYNC_ACTION", "同步动作", SyncActionEvent.class),
     REQUEST_ACTION("REQUEST_ACTION", "请求动作", RequestActionEvent.class),
     LOCK_PLAYER("LOCK_PLAYER", "锁定玩家位置", LockPlayerEvent.class),
     UNLOCK_PLAYER("UNLOCK_PLAYER", "解锁玩家位置", UnlockPlayerEvent.class),
-    SHUFFLE_REQUEST("SHUFFLE_REQUEST", "洗牌", ShuffleEvent.class),
+    SEED_CREATE("SEED_CREATE", "生成种子", SeedCreateEvent.class),
+    SEED_ALLOT("SEED_ALLOT", "发牌", SeedAllotEvent.class),
     ;
 
 

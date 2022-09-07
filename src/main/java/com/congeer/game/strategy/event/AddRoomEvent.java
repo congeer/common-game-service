@@ -5,11 +5,16 @@ import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
 import com.congeer.game.strategy.model.AddRoomData;
+import com.congeer.game.strategy.model.SeedData;
 import io.vertx.core.json.JsonObject;
+
+import java.util.List;
+import java.util.Map;
 
 import static com.congeer.game.strategy.enums.ClientEventEnum.CONNECTED;
 import static com.congeer.game.strategy.enums.ClientEventEnum.JOIN_PLAYER;
 import static com.congeer.game.strategy.enums.ClientEventEnum.ROOM_INFO;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_SEED;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_ACTION;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
 
@@ -47,17 +52,24 @@ public class AddRoomEvent extends GameEvent {
         // 通知其他人有玩家加入
         gameContext.radio(socketId, new Message(JOIN_PLAYER, player.baseInfo()));
 
-        // 同步全局配置
+        // 1、同步全局配置
         for (JsonObject config : room.getConfigList()) {
             gameContext.notice(socketId, new Message(SYNC_CONFIG, config));
         }
-        // 同步玩家配置
+        // 2、同步玩家配置
         if (!player.getConfigList().isEmpty()) {
             for (JsonObject config : player.getConfigList()) {
                 gameContext.notice(socketId, new Message(SYNC_CONFIG, config));
             }
         }
-        // 同步所有操作
+        // 3、同步所有随机种子给玩家
+        for (Map.Entry<String, List<Integer>> entry : room.getSeedMap().entrySet()) {
+            SeedData seed = new SeedData();
+            seed.setCode(entry.getKey());
+            seed.setData(entry.getValue());
+            gameContext.notice(socketId, new Message(SYNC_SEED, seed));
+        }
+        // 4、同步所有操作
         for (JsonObject action : room.getActionList()) {
             gameContext.notice(socketId, new Message(SYNC_ACTION, action));
         }
