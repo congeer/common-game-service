@@ -17,6 +17,8 @@ public class GameContext {
 
     private final Map<String, String> socketRoom = new ConcurrentHashMap<>();
 
+    private final Map<String, Long> socketAlive = new ConcurrentHashMap<>();
+
     public boolean containsRoom(String roomId) {
         return roomMap.containsKey(roomId);
     }
@@ -93,6 +95,10 @@ public class GameContext {
         status.setSocketCount(socketRoom.size());
         status.setRoomList(roomMap.values().stream().toList());
         return status;
+    }
+
+    public void setSocketAlive(String socketId) {
+        socketAlive.put(socketId, System.nanoTime());
     }
 
 }

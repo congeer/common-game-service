@@ -73,6 +73,7 @@ public class AddRoomEvent extends GameEvent {
         for (JsonObject action : room.getActionList()) {
             gameContext.notice(socketId, new Message(SYNC_ACTION, action));
         }
+        gameContext.setSocketAlive(socketId);
     }
 
     private static Player createOwnerPlayer(String socketId, String playerId) {
