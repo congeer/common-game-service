@@ -28,6 +28,7 @@ To run your application:
 * https://groups.google.com/forum/?fromgroups#!forum/vertx[Vert.x User Group]
 * https://gitter.im/eclipse-vertx/vertx-users[Vert.x Gitter]
 
+scp target/game-1.0.0-SNAPSHOT-fat.jar congeer:~/game/game-1.0.0-SNAPSHOT-fat.jar
 
 docker build -t congeer/game game
 
@@ -36,3 +37,4 @@ docker stop -t 1 game && docker rm game
 docker run --network=docker-net --restart=always --name game -d congeer/game
 
 docker logs -f game
+
