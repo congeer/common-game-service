@@ -1,5 +1,6 @@
-package com.congeer.game.bean;
+package com.congeer.game.codec;
 
+import com.congeer.game.bean.Message;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
 import io.vertx.core.json.JsonObject;
@@ -27,7 +28,7 @@ public class GameMessageCodec implements MessageCodec<Message, Message> {
 
     @Override
     public String name() {
-        return "gamemessage";
+        return "game_message";
     }
 
     @Override

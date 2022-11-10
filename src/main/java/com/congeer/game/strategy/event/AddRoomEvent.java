@@ -15,7 +15,7 @@ import static com.congeer.game.strategy.enums.ClientEventEnum.CONNECTED;
 import static com.congeer.game.strategy.enums.ClientEventEnum.JOIN_PLAYER;
 import static com.congeer.game.strategy.enums.ClientEventEnum.ROOM_INFO;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_SEED;
-import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_ACTION;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_FRAME;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
 
 public class AddRoomEvent extends GameEvent {
@@ -71,7 +71,7 @@ public class AddRoomEvent extends GameEvent {
         }
         // 4、同步所有操作
         for (JsonObject action : room.getActionList()) {
-            gameContext.notice(socketId, new Message(SYNC_ACTION, action));
+            gameContext.notice(socketId, new Message(SYNC_FRAME, action));
         }
         gameContext.setSocketAlive(socketId);
     }

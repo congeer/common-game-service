@@ -7,7 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ClientEventEnum {
 
-    SYNC_ACTION("SYNC_ACTION", "同步动作"),
+    SYNC_FRAME("SYNC_FRAME", "帧同步"),
     SYNC_CONFIG("SYNC_CONFIG", "同步配置"),
     CONNECTED("CONNECTED", "已连接"),
     ROOM_INFO("ROOM_INFO", "房间信息"),

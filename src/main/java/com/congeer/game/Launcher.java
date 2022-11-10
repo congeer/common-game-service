@@ -1,6 +1,6 @@
 package com.congeer.game;
 
-import com.congeer.game.bean.GameMessageCodec;
+import com.congeer.game.codec.GameMessageCodec;
 import com.congeer.game.bean.Message;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;

@@ -31,13 +31,13 @@ public class RequestVerticle extends AbstractVerticle {
                 JsonObject entries = handler.toJsonObject();
                 entries.put("socketId", socketId);
                 Message message = entries.mapTo(Message.class);
-                eventBus.<Message>send("GAME_EVENT/" + message.getType(), message);
+                eventBus.send("GAME_EVENT/" + message.getType(), message);
             }).closeHandler(handler -> {
             }).exceptionHandler(handler -> {
             }).drainHandler(handler -> {
             }).endHandler(handler -> {
                 Message message = new Message().setType(RoomEventEnum.LEAVE_ROOM.getCode()).setSocketId(socketId);
-                eventBus.<Message>send("GAME_EVENT/" + message.getType(), message);
+                eventBus.send("GAME_EVENT/" + message.getType(), message);
             });
         }).requestHandler(router).listen(8888, http -> {
             if (http.succeeded()) {
