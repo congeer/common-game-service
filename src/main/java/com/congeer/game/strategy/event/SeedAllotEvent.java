@@ -27,26 +27,4 @@ public class SeedAllotEvent extends GameEvent {
         gameContext.radio(body.getSocketId(), new Message(ClientEventEnum.SEED_ALLOTTED), false);
     }
 
-    public List<Integer> getRandomArray(int start, int length) {
-        int[] source = new int[length];
-        for (int i = 0; i < length; i++) {
-            source[i] = i + start;
-        }
-        Integer[] result = new Integer[length];
-        Random random = new Random();
-        for (int i = 0; i < length; i++) {
-            int bound = length - 1 - i;
-            int randomIndex = bound;
-            if (bound != 0) {
-                randomIndex = random.nextInt(bound);
-            }
-            int randomRes = source[randomIndex];
-            result[i] = randomRes;
-            int temp = source[randomIndex];
-            source[randomIndex] = source[bound];
-            source[bound] = temp;
-        }
-        return Arrays.asList(result);
-    }
-
 }

@@ -4,6 +4,9 @@ import com.congeer.game.bean.Message;
 import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
 
+/**
+ * 健康检查
+ */
 public class HealthEvent extends GameEvent {
 
     @Override

@@ -11,6 +11,9 @@ import java.util.List;
 
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
 
+/**
+ * 房间设置事件
+ */
 public class ConfigRoomEvent extends GameEvent {
 
     @Override

@@ -18,7 +18,7 @@ public enum RoomEventEnum {
     LOCK_SEAT("LOCK_SEAT", "锁定座位", LockSeatEvent.class),
     UNLOCK_SEAT("UNLOCK_SEAT", "解锁座位", UnlockSeatEvent.class),
     SEED_CREATE("SEED_CREATE", "生成种子", SeedCreateEvent.class),
-    SEED_ALLOT("SEED_ALLOT", "发牌", SeedAllotEvent.class),
+    SEED_ALLOT("SEED_ALLOT", "分配种子", SeedAllotEvent.class),
     ;
 
 

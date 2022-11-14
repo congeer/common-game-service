@@ -43,8 +43,8 @@ public class Room {
     // 房间观众列表
     private final List<Player> viewers = new CopyOnWriteArrayList<>();
 
-    // 存储的动作列表
-    private List<JsonObject> actionList = new CopyOnWriteArrayList<>();
+    // 存储的帧列表
+    private List<JsonObject> frameList = new CopyOnWriteArrayList<>();
 
     // 存储的设置列表
     private List<JsonObject> configList = new CopyOnWriteArrayList<>();
@@ -68,7 +68,7 @@ public class Room {
     }
 
     public Room resetActionList() {
-        this.actionList = new CopyOnWriteArrayList<>();
+        this.frameList = new CopyOnWriteArrayList<>();
         return this;
     }
 
@@ -181,8 +181,8 @@ public class Room {
     }
 
 
-    public List<JsonObject> getActionList() {
-        return actionList;
+    public List<JsonObject> getFrameList() {
+        return frameList;
     }
 
 

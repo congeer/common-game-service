@@ -5,6 +5,9 @@ import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
 import com.congeer.game.strategy.model.LockData;
 
+/**
+ * 解除座位锁定
+ */
 public class UnlockSeatEvent extends GameEvent {
 
     @Override

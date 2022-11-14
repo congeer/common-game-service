@@ -18,6 +18,9 @@ import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_SEED;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_FRAME;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
 
+/**
+ * 加入房间事件
+ */
 public class AddRoomEvent extends GameEvent {
 
     @Override
@@ -70,7 +73,7 @@ public class AddRoomEvent extends GameEvent {
             gameContext.notice(socketId, new Message(SYNC_SEED, seed));
         }
         // 4、同步所有操作
-        for (JsonObject action : room.getActionList()) {
+        for (JsonObject action : room.getFrameList()) {
             gameContext.notice(socketId, new Message(SYNC_FRAME, action));
         }
         gameContext.setSocketAlive(socketId);

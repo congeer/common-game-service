@@ -7,6 +7,9 @@ import com.congeer.game.strategy.GameEvent;
 
 import static com.congeer.game.strategy.enums.ClientEventEnum.LEAVE_PLAYER;
 
+/**
+ * 离开房间事件
+ */
 public class LeaveRoomEvent extends GameEvent {
 
     @Override

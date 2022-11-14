@@ -15,7 +15,7 @@ public class SeedCreateEvent extends GameEvent {
     @Override
     protected void handle(Message body) {
         SeedData data = body.getData(SeedData.class);
-        List<Integer> result = getRandomArray(data.getStart(), data.getCount());
+        List<Integer> result = getRandomArray(data.getStart(), data.getCount(), data.getStep());
         if (data.isResult()) {
             data.setData(result);
         }
@@ -26,10 +26,10 @@ public class SeedCreateEvent extends GameEvent {
         gameContext.radio(body.getSocketId(), new Message(ClientEventEnum.SYNC_SEED, data), false);
     }
 
-    public List<Integer> getRandomArray(int start, int length) {
+    public List<Integer> getRandomArray(int start, int length, int step) {
         int[] source = new int[length];
         for (int i = 0; i < length; i++) {
-            source[i] = i + start;
+            source[i] = i;
         }
         Integer[] result = new Integer[length];
         Random random = new Random();
@@ -40,7 +40,7 @@ public class SeedCreateEvent extends GameEvent {
                 randomIndex = random.nextInt(bound);
             }
             int randomRes = source[randomIndex];
-            result[i] = randomRes;
+            result[i] = randomRes * step + start;
             int temp = source[randomIndex];
             source[randomIndex] = source[bound];
             source[bound] = temp;

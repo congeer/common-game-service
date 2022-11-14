@@ -15,7 +15,7 @@ public enum ClientEventEnum {
     JOIN_PLAYER("JOIN_PLAYER", "加入玩家"),
     RESET_ROOM("RESET_ROOM", "重置房间"),
     SYNC_SEED("SYNC_SEED", "种子生成完成"),
-    SEED_ALLOTTED("SEED_ALLOTTED", "种子返回结果"),
+    SEED_ALLOTTED("SEED_ALLOTTED", "种子分配结果"),
     ;
 
     private final String code;
