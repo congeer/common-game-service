@@ -1,4 +1,4 @@
-package com.congeer.game.strategy.event;
+package com.congeer.game.strategy.event.room;
 
 import com.congeer.game.bean.Message;
 import com.congeer.game.bean.Player;
@@ -14,9 +14,9 @@ import java.util.Map;
 import static com.congeer.game.strategy.enums.ClientEventEnum.CONNECTED;
 import static com.congeer.game.strategy.enums.ClientEventEnum.JOIN_PLAYER;
 import static com.congeer.game.strategy.enums.ClientEventEnum.ROOM_INFO;
-import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_SEED;
-import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_FRAME;
 import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_FRAME;
+import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_SEED;
 
 /**
  * 加入房间事件

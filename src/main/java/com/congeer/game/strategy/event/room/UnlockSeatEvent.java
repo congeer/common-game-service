@@ -1,4 +1,4 @@
-package com.congeer.game.strategy.event;
+package com.congeer.game.strategy.event.room;
 
 import com.congeer.game.bean.Message;
 import com.congeer.game.bean.Room;
