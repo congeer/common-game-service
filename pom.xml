@@ -16,11 +16,11 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
 
-        <vertx.version>4.3.3</vertx.version>
-        <junit-jupiter.version>5.7.0</junit-jupiter.version>
+        <vertx.version>4.3.5</vertx.version>
+        <junit-jupiter.version>5.9.0</junit-jupiter.version>
 
         <launcher.class>com.congeer.game.Launcher</launcher.class>
-        <jackson.version>2.13.3</jackson.version>
+        <jackson.version>2.14.0</jackson.version>
     </properties>
 
     <dependencyManagement>
