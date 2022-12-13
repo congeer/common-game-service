@@ -2,6 +2,8 @@ package com.congeer.game.bean;
 
 
 import com.congeer.game.strategy.model.RoomData;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.vertx.core.json.JsonObject;
 
 import java.util.ArrayList;
@@ -14,7 +16,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Room {
 
-    public Room(String id) {
+    @JsonCreator(mode = JsonCreator.Mode.PROPERTIES)
+    public Room(@JsonProperty("id") String id) {
         this.id = id;
         this.lastUpdateTime = System.nanoTime();
     }

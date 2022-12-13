@@ -13,9 +13,10 @@ public class SyncFrameEvent extends GameEvent {
 
     @Override
     protected void handle(Message body) {
-        Room room = gameContext.getRoomBySocketId(body.getSocketId());
-        room.getFrameList().add(body.getData());
-        gameContext.radio(body.getSocketId(), new Message(SYNC_FRAME, body.getData()));
+        gameContext.getRoomBySocketId(body.getSocketId()).onSuccess(room -> {
+            room.getFrameList().add(body.getData());
+            gameContext.radio(body.getSocketId(), new Message(SYNC_FRAME, body.getData()));
+        });
     }
 
 }

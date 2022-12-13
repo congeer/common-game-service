@@ -13,9 +13,10 @@ public class ResetRoomEvent extends GameEvent {
 
     @Override
     protected void handle(Message body) {
-        Room room = gameContext.getRoomBySocketId(body.getSocketId());
-        room.resetRoom();
-        gameContext.radio(body.getSocketId(), new Message(RESET_ROOM), false);
+        gameContext.getRoomBySocketId(body.getSocketId()).onSuccess(room -> {
+            room.resetRoom();
+            gameContext.radio(body.getSocketId(), new Message(RESET_ROOM), false);
+        });
     }
 
 }

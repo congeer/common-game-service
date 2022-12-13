@@ -14,12 +14,13 @@ public class UnlockSeatEvent extends GameEvent {
     protected void handle(Message body) {
         String socketId = body.getSocketId();
         LockData data = body.getData(LockData.class);
-        Room room = gameContext.getRoomBySocketId(socketId);
-        if (data.isAll() && room.getPlayer(socketId).isOwner()) {
-            room.getPlayers().forEach(v -> v.setLock(false));
-        } else {
-            room.getPlayer(socketId).setLock(false);
-        }
+        gameContext.getRoomBySocketId(socketId).onSuccess(room -> {
+            if (data.isAll() && room.getPlayer(socketId).isOwner()) {
+                room.getPlayers().forEach(v -> v.setLock(false));
+            } else {
+                room.getPlayer(socketId).setLock(false);
+            }
+        });
     }
 
 }

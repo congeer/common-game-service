@@ -15,15 +15,13 @@ public class LeaveRoomEvent extends GameEvent {
     @Override
     protected void handle(Message body) {
         String socketId = body.getSocketId();
-        Room room = gameContext.getRoomBySocketId(socketId);
-        if (room == null) {
-            return;
-        }
-        Player player = room.playerLeave(socketId);
-        gameContext.removeSocket(socketId);
-        if (player != null) {
-            gameContext.radio(room, new Message(LEAVE_PLAYER, player.baseInfo()));
-        }
+        gameContext.getRoomBySocketId(socketId).onSuccess(room ->{
+            Player player = room.playerLeave(socketId);
+            gameContext.removeSocket(socketId);
+            if (player != null) {
+                gameContext.radio(room, new Message(LEAVE_PLAYER, player.baseInfo()));
+            }
+        });
     }
 
 }

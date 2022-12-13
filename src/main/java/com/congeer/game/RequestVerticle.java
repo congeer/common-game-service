@@ -45,6 +45,7 @@ public class RequestVerticle extends AbstractVerticle {
                 System.out.println("HTTP server started on port 8888");
             } else {
                 startPromise.fail(http.cause());
+                System.out.println("HTTP server started failed");
             }
         });
     }

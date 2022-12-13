@@ -11,9 +11,10 @@ public class HealthEvent extends GameEvent {
 
     @Override
     protected void handle(Message body) {
-        Room room = gameContext.getRoomBySocketId(body.getSocketId());
-        room.setLastUpdateTime(System.nanoTime());
-        gameContext.setSocketAlive(body.getSocketId());
+        gameContext.getRoomBySocketId(body.getSocketId()).onSuccess(room -> {
+            room.setLastUpdateTime(System.nanoTime());
+            gameContext.setSocketAlive(body.getSocketId());
+        });
     }
 
 }

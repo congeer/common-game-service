@@ -5,13 +5,15 @@ import com.congeer.game.strategy.enums.BaseEventEnum;
 import com.congeer.game.strategy.enums.LobbyEventEnum;
 import com.congeer.game.strategy.enums.RoomEventEnum;
 import com.congeer.game.strategy.model.GameContext;
+import com.congeer.game.strategy.model.MapGameContext;
+import com.congeer.game.strategy.model.RedisGameContext;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.JsonObject;
 
 public class GameVerticle extends AbstractVerticle {
 
-    private final static GameContext GAME_CONTEXT = new GameContext();
+    private final static GameContext GAME_CONTEXT = new RedisGameContext();
 
     @Override
     public void start() throws Exception {

@@ -19,11 +19,10 @@ public class SeedCreateEvent extends GameEvent {
         if (data.isResult()) {
             data.setData(result);
         }
-        Room room = gameContext.getRoomBySocketId(body.getSocketId());
-        if (room != null) {
+        gameContext.getRoomBySocketId(body.getSocketId()).onSuccess(room-> {
             room.setSeed(data.getCode(), result);
-        }
-        gameContext.radio(body.getSocketId(), new Message(ClientEventEnum.SYNC_SEED, data), false);
+            gameContext.radio(body.getSocketId(), new Message(ClientEventEnum.SYNC_SEED, data), false);
+        });
     }
 
     public List<Integer> getRandomArray(int start, int length, int step) {
