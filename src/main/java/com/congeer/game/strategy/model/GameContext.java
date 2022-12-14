@@ -15,11 +15,11 @@ public abstract class GameContext {
     public abstract void addSocket(String socketId, String roomId);
     public abstract Future<Room> getRoomBySocketId(String socketId);
 
-    public abstract Player getPlayerBySocketId(String socketId);
+    public abstract Future<Player> getPlayerBySocketId(String socketId);
 
     public abstract Future<Room> getRoom(String roomId);
 
-    public abstract Player getEmptyPlayer(String roomId, String playerId);
+    public abstract Future<Player> getEmptyPlayer(String roomId, String playerId);
 
     public abstract void removeSocket(String socketId);
 
@@ -47,10 +47,12 @@ public abstract class GameContext {
         Launcher.getVert().eventBus().send(socketId, JsonObject.mapFrom(data).toBuffer());
     }
 
-    public abstract GameStatus getStatus();
+    public abstract Future<GameStatus> getStatus();
 
     public abstract void setSocketAlive(String socketId);
 
     public abstract void updateRoom(Room room);
+
+    public abstract void createRoom(Room room);
 
 }

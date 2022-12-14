@@ -6,9 +6,10 @@ import io.vertx.core.Future;
 import io.vertx.core.Promise;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class MapGameContext extends GameContext{
+public class MapGameContext extends GameContext {
 
     private final Map<String, Room> roomMap = new ConcurrentHashMap<>();
 
@@ -24,6 +25,15 @@ public class MapGameContext extends GameContext{
         roomMap.put(room.getId(), room);
     }
 
+    @Override
+    public void createRoom(Room room) {
+        if (!roomMap.containsKey(room)) {
+            roomMap.put(room.getId(), room);
+        } else {
+            
+        }
+    }
+
     public Future<Room> getRoomBySocketId(String socketId) {
         String roomId = socketRoom.get(socketId);
         if (roomId == null) {
@@ -32,47 +42,58 @@ public class MapGameContext extends GameContext{
         return getRoom(roomId);
     }
 
-    public Player getPlayerBySocketId(String socketId) {
-//        Room room = getRoomBySocketId(socketId);
-//        if (room == null) {
-//            return null;
-//        }
-//        return room.getPlayer(socketId);
-        return null;
-    }
-
-    public Future<Room> getRoom(String roomId) {
-        Promise<Room> promise = Promise.promise();
-        if (roomMap.containsKey(roomId)) {
-            promise.complete(roomMap.get(roomId));
-        } else {
-            promise.fail("not exist");
-        }
+    @Override
+    public Future<Player> getPlayerBySocketId(String socketId) {
+        Promise<Player> promise = Promise.promise();
+        getRoomBySocketId(socketId).onSuccess(room -> {
+            Player player = room.getPlayer(socketId);
+            if (player != null) {
+                promise.complete(player);
+            } else {
+                promise.fail("not exist");
+            }
+        }).onFailure(promise::fail);
         return promise.future();
     }
 
-    public Player getEmptyPlayer(String roomId, String playerId) {
-//        Room room = getRoom(roomId);
-//        Optional<Player> has = room.getPlayers().stream().filter(v -> playerId.equals(v.getId())).findFirst();
-//        if (has.isPresent()) {
-//            return has.get();
-//        }
-//        Optional<Player> first = room.getPlayers().stream().filter(v -> (!v.isLock() && v.getSocketId() == null)
-//            || v.getId() == null).findFirst();
-//        return first.orElse(null);
-        return null;
+    public Future<Room> getRoom(String roomId) {
+        if (roomMap.containsKey(roomId)) {
+            return Future.succeededFuture(roomMap.get(roomId));
+        } else {
+            return Future.failedFuture("not exist");
+        }
+    }
+
+    @Override
+    public Future<Player> getEmptyPlayer(String roomId, String playerId) {
+        Promise<Player> promise = Promise.promise();
+        getRoom(roomId).onSuccess(room -> {
+            Optional<Player> has = room.getPlayers().stream().filter(v -> playerId.equals(v.getId())).findFirst();
+            if (has.isPresent()) {
+                promise.complete(has.get());
+                return;
+            }
+            Optional<Player> first = room.getPlayers().stream().filter(v -> (!v.isLock() && v.getSocketId() == null)
+                || v.getId() == null).findFirst();
+            if (first.isPresent()) {
+                promise.complete(first.get());
+            } else {
+                promise.fail("not exist");
+            }
+        }).onFailure(promise::fail);
+        return promise.future();
     }
 
     public void removeSocket(String socketId) {
         socketRoom.remove(socketId);
     }
 
-    public GameStatus getStatus() {
+    public Future<GameStatus> getStatus() {
         GameStatus status = new GameStatus();
         status.setRoomCount(roomMap.size());
         status.setSocketCount(socketRoom.size());
         status.setRoomList(roomMap.values().stream().toList());
-        return status;
+        return Future.succeededFuture(status);
     }
 
     public void setSocketAlive(String socketId) {

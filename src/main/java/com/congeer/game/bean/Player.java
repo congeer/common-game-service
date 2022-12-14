@@ -111,4 +111,9 @@ public class Player {
             .setIndex(index);
     }
 
+    public static Player createOwnerPlayer(String socketId, String playerId) {
+        Player player = new Player(playerId, socketId);
+        return player.setOwner(true).setPlayer(true).setIndex(0).setLock(true);
+    }
+
 }

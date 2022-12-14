@@ -65,7 +65,10 @@
             <artifactId>vertx-codegen</artifactId>
             <classifier>processor</classifier>
         </dependency>
-
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-sync</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-junit5</artifactId>

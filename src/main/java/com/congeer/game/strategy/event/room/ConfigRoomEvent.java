@@ -2,7 +2,6 @@ package com.congeer.game.strategy.event.room;
 
 import com.congeer.game.bean.Message;
 import com.congeer.game.bean.Player;
-import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
 import com.congeer.game.strategy.model.ConfigRoomData;
 import io.vertx.core.json.JsonObject;
@@ -18,6 +17,7 @@ public class ConfigRoomEvent extends GameEvent {
 
     @Override
     protected void handle(Message message) {
+
         String socketId = message.getSocketId();
         gameContext.getRoomBySocketId(socketId).onSuccess(room->{
             room.clearConfig();
@@ -42,6 +42,7 @@ public class ConfigRoomEvent extends GameEvent {
                 gameContext.radio(socketId, new Message(SYNC_CONFIG, config));
             }
             room.setConfig(true);
+            gameContext.updateRoom(room);
         });
     }
 
