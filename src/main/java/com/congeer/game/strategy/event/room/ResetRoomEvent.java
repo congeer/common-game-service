@@ -1,21 +1,23 @@
 package com.congeer.game.strategy.event.room;
 
-import com.congeer.game.bean.Message;
+import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
+import com.congeer.game.strategy.RoomEvent;
 
-import static com.congeer.game.strategy.enums.ClientEventEnum.RESET_ROOM;
+import static com.congeer.game.enums.ClientEventEnum.RESET_ROOM;
 
 /**
  * 重置房间事件
  */
-public class ResetRoomEvent extends GameEvent {
+public class ResetRoomEvent extends RoomEvent<Void> {
 
     @Override
-    protected void handle(Message body) {
-        Room room = gameContext.getRoomBySocketId(body.getSocketId());
+    protected void handleData(Void body) {
+        Room room = getRoom();
         room.resetRoom();
-        gameContext.radio(body.getSocketId(), new Message(RESET_ROOM), false);
+        updateRoom();
+        radio(new BaseMessage(RESET_ROOM), false);
     }
 
 }

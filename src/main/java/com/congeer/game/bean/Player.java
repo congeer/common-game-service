@@ -10,11 +10,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class Player {
 
     public Player() {
+        this.lastUpdateTime = System.currentTimeMillis();
     }
 
     public Player(String id, String socketId) {
         this.id = id;
         this.socketId = socketId;
+        this.lastUpdateTime = System.currentTimeMillis();
     }
 
     private String id;
@@ -28,6 +30,11 @@ public class Player {
     private boolean lock;
 
     private int index = -1;
+
+    // 最后更新时间
+    private long lastUpdateTime;
+
+    private Room where;
 
     private List<JsonObject> configList = new ArrayList<>();
 
@@ -101,9 +108,32 @@ public class Player {
 
     public void clearPlayer() {
         this.socketId = null;
+        this.lastUpdateTime = -1;
         if (!lock) {
             this.id = null;
         }
+    }
+
+    public long getLastUpdateTime() {
+        return lastUpdateTime;
+    }
+
+    public Player setLastUpdateTime(long lastUpdateTime) {
+        this.lastUpdateTime = lastUpdateTime;
+        return this;
+    }
+
+    public String getWhere() {
+        if (where != null) {
+            return where.getId();
+        } else {
+            return null;
+        }
+    }
+
+    public Player setWhere(Room where) {
+        this.where = where;
+        return this;
     }
 
     public PlayerData baseInfo() {

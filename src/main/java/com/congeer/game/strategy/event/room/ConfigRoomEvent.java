@@ -1,27 +1,25 @@
 package com.congeer.game.strategy.event.room;
 
-import com.congeer.game.bean.Message;
+import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
-import com.congeer.game.strategy.GameEvent;
+import com.congeer.game.strategy.RoomEvent;
 import com.congeer.game.strategy.model.ConfigRoomData;
 import io.vertx.core.json.JsonObject;
 
 import java.util.List;
 
-import static com.congeer.game.strategy.enums.ClientEventEnum.SYNC_CONFIG;
+import static com.congeer.game.enums.ClientEventEnum.SYNC_CONFIG;
 
 /**
  * 房间设置事件
  */
-public class ConfigRoomEvent extends GameEvent {
+public class ConfigRoomEvent extends RoomEvent<ConfigRoomData> {
 
     @Override
-    protected void handle(Message message) {
-        String socketId = message.getSocketId();
-        Room room = gameContext.getRoomBySocketId(socketId);
+    protected void handleData(ConfigRoomData data) {
+        Room room = getRoom();
         room.clearConfig();
-        ConfigRoomData data = message.getData(ConfigRoomData.class);
         room.setMaxPlayer(data.getMaxPlayer());
         room.configPlayer();
         List<List<JsonObject>> playerConfig = data.getPlayerConfig();
@@ -31,7 +29,7 @@ public class ConfigRoomEvent extends GameEvent {
             for (JsonObject config : jsonObjects) {
                 player.getConfigList().add(config);
                 if (player.getSocketId() != null) {
-                    gameContext.notice(player.getSocketId(), new Message(SYNC_CONFIG, config));
+                    sendTo(player.getSocketId(), new BaseMessage(SYNC_CONFIG, config));
                 }
             }
         }
@@ -39,9 +37,10 @@ public class ConfigRoomEvent extends GameEvent {
         for (int i = 0; i < baseConfig.size(); i++) {
             JsonObject config = baseConfig.get(i);
             room.getConfigList().add(config);
-            gameContext.radio(socketId, new Message(SYNC_CONFIG, config));
+            radio(new BaseMessage(SYNC_CONFIG, config));
         }
         room.setConfig(true);
+        updateRoom();
     }
 
 }

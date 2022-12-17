@@ -1,12 +1,12 @@
 package com.congeer.game.strategy.event.lobby;
 
-import com.congeer.game.bean.Message;
+import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.strategy.GameEvent;
 
-public class RandomMatchEvent extends GameEvent {
+public class RandomMatchEvent extends GameEvent<Void> {
 
     @Override
-    protected void handle(Message body) {
+    protected void handleData(Void body) {
 
     }
 

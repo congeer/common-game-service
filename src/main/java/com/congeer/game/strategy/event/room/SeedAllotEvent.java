@@ -1,19 +1,14 @@
 package com.congeer.game.strategy.event.room;
 
-import com.congeer.game.bean.Message;
-import com.congeer.game.bean.Room;
+import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.strategy.GameEvent;
-import com.congeer.game.strategy.enums.ClientEventEnum;
-import com.congeer.game.strategy.model.SeedData;
+import com.congeer.game.enums.ClientEventEnum;
+import com.congeer.game.strategy.RoomEvent;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
-
-public class SeedAllotEvent extends GameEvent {
+public class SeedAllotEvent extends RoomEvent<Void> {
 
     @Override
-    protected void handle(Message body) {
+    protected void handleData(Void body) {
 //        SeedData data = body.getData(SeedData.class);
 //        Room room = gameContext.getRoomBySocketId(body.getSocketId());
 //        int seat = data.getSeat();
@@ -24,7 +19,7 @@ public class SeedAllotEvent extends GameEvent {
 //            }
 //            data.setIndex(room.pullSeed(data.getCode()));
 //        }
-        gameContext.radio(body.getSocketId(), new Message(ClientEventEnum.SEED_ALLOTTED), false);
+        radio(new BaseMessage(ClientEventEnum.SEED_ALLOTTED), false);
     }
 
 }

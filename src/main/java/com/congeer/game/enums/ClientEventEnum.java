@@ -1,4 +1,4 @@
-package com.congeer.game.strategy.enums;
+package com.congeer.game.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ClientEventEnum {
 
+    ERROR("ERROR", "错误"),
     SYNC_FRAME("SYNC_FRAME", "帧同步"),
     SYNC_CONFIG("SYNC_CONFIG", "同步配置"),
     CONNECTED("CONNECTED", "已连接"),

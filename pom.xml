@@ -16,10 +16,10 @@
         <maven-surefire-plugin.version>2.22.2</maven-surefire-plugin.version>
         <exec-maven-plugin.version>3.0.0</exec-maven-plugin.version>
 
-        <vertx.version>4.3.5</vertx.version>
+        <vertx.version>4.3.6</vertx.version>
         <junit-jupiter.version>5.9.0</junit-jupiter.version>
 
-        <launcher.class>com.congeer.game.Launcher</launcher.class>
+        <launcher.class>com.congeer.game.Application</launcher.class>
         <jackson.version>2.14.0</jackson.version>
     </properties>
 
@@ -56,13 +56,19 @@
             <groupId>io.vertx</groupId>
             <artifactId>vertx-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-redis-client</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-codegen</artifactId>
             <classifier>processor</classifier>
         </dependency>
-
+        <dependency>
+            <groupId>io.vertx</groupId>
+            <artifactId>vertx-sync</artifactId>
+        </dependency>
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-junit5</artifactId>

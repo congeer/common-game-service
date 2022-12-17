@@ -1,28 +1,28 @@
 package com.congeer.game.strategy.event.room;
 
-import com.congeer.game.bean.Message;
+import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.strategy.GameEvent;
+import com.congeer.game.strategy.RoomEvent;
 
-import static com.congeer.game.strategy.enums.ClientEventEnum.LEAVE_PLAYER;
+import static com.congeer.game.enums.ClientEventEnum.LEAVE_PLAYER;
 
 /**
  * 离开房间事件
  */
-public class LeaveRoomEvent extends GameEvent {
+public class LeaveRoomEvent extends RoomEvent<Void> {
 
     @Override
-    protected void handle(Message body) {
-        String socketId = body.getSocketId();
-        Room room = gameContext.getRoomBySocketId(socketId);
+    protected void handleData(Void body) {
+        Room room = getRoom();
         if (room == null) {
             return;
         }
         Player player = room.playerLeave(socketId);
-        gameContext.removeSocket(socketId);
+        removeSocket();
         if (player != null) {
-            gameContext.radio(room, new Message(LEAVE_PLAYER, player.baseInfo()));
+            radio(new BaseMessage(LEAVE_PLAYER, player.baseInfo()));
         }
     }
 

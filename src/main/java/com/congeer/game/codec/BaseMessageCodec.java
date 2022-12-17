@@ -1,34 +1,34 @@
 package com.congeer.game.codec;
 
-import com.congeer.game.bean.Message;
+import com.congeer.game.bean.BaseMessage;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.MessageCodec;
 import io.vertx.core.json.JsonObject;
 
-public class GameMessageCodec implements MessageCodec<Message, Message> {
+public class BaseMessageCodec implements MessageCodec<BaseMessage, BaseMessage> {
 
     @Override
-    public void encodeToWire(Buffer buffer, Message message) {
+    public void encodeToWire(Buffer buffer, BaseMessage message) {
         Buffer encoded = message.toJson().toBuffer();
         buffer.appendInt(encoded.length());
         buffer.appendBuffer(encoded);
     }
 
     @Override
-    public Message decodeFromWire(int pos, Buffer buffer) {
+    public BaseMessage decodeFromWire(int pos, Buffer buffer) {
         int length = buffer.getInt(pos);
         pos += 4;
-        return new Message(new JsonObject(buffer.slice(pos, pos + length)));
+        return new JsonObject(buffer.slice(pos, pos + length)).mapTo(BaseMessage.class);
     }
 
     @Override
-    public Message transform(Message jsonObject) {
-        return new Message(jsonObject.toJson().copy());
+    public BaseMessage transform(BaseMessage source) {
+        return source.toJson().copy().mapTo(BaseMessage.class);
     }
 
     @Override
     public String name() {
-        return "game_message";
+        return "base_message";
     }
 
     @Override

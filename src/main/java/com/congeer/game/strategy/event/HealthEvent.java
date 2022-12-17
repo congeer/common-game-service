@@ -1,19 +1,15 @@
 package com.congeer.game.strategy.event;
 
-import com.congeer.game.bean.Message;
-import com.congeer.game.bean.Room;
-import com.congeer.game.strategy.GameEvent;
+import com.congeer.game.strategy.RoomEvent;
 
 /**
  * 健康检查
  */
-public class HealthEvent extends GameEvent {
+public class HealthEvent extends RoomEvent<Void> {
 
     @Override
-    protected void handle(Message body) {
-        Room room = gameContext.getRoomBySocketId(body.getSocketId());
-        room.setLastUpdateTime(System.nanoTime());
-        gameContext.setSocketAlive(body.getSocketId());
+    protected void handleData(Void body) {
+        updateRoom();
     }
 
 }

@@ -1,12 +1,11 @@
 package com.congeer.game.strategy.event.lobby;
 
-import com.congeer.game.bean.Message;
 import com.congeer.game.strategy.GameEvent;
 
-public class RoomListEvent extends GameEvent {
+public class RoomListEvent extends GameEvent<Void> {
 
     @Override
-    protected void handle(Message body) {
+    protected void handleData(Void body) {
 
     }
 

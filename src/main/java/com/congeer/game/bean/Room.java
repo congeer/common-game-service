@@ -37,8 +37,8 @@ public class Room {
     // 房间随机数种子
     private Map<String, List<Integer>> seedMap = new ConcurrentHashMap<>();
 
-    // 房间玩家列表
-    private final List<Player> players = new CopyOnWriteArrayList<>();
+    // 房间座位列表
+    private final List<Player> seats = new CopyOnWriteArrayList<>();
 
     // 房间观众列表
     private final List<Player> viewers = new CopyOnWriteArrayList<>();
@@ -53,34 +53,63 @@ public class Room {
      * 设置房间的初始化玩家信息
      */
     public void configPlayer() {
-        players.removeIf(next -> next.getIndex() >= maxPlayer);
-        for (int i = players.size(); i < maxPlayer; i++) {
+        seats.removeIf(next -> next.getIndex() >= maxPlayer);
+        for (int i = seats.size(); i < maxPlayer; i++) {
             Player player = new Player();
             player.setPlayer(true);
             player.setIndex(i);
-            players.add(player);
+            player.setWhere(this);
+            seats.add(player);
         }
     }
 
-
+    /**
+     * 获取房间的一个玩家
+     * @param socketId
+     * @return
+     */
     public Player getPlayer(String socketId) {
-        return players.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst().orElse(null);
+        return seats.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst().orElse(null);
     }
 
-    public Room resetActionList() {
+    /**
+     * 获取一个空位置
+     * @param playerId
+     * @return
+     */
+    public Player getEmptySeat(String playerId) {
+        Optional<Player> has = getPlayers().stream().filter(v -> playerId.equals(v.getId())).findFirst();
+        if (has.isPresent()) {
+            return has.get();
+        }
+        Optional<Player> first = getPlayers().stream().filter(v -> (!v.isLock() && v.getSocketId() == null)
+            || v.getId() == null).findFirst();
+        return first.orElse(null);
+    }
+
+    /**
+     * 重制房间帧
+     * @return
+     */
+    public Room resetFrameList() {
         this.frameList = new CopyOnWriteArrayList<>();
         return this;
     }
 
     public List<Player> allPlayer() {
         List<Player> ret = new CopyOnWriteArrayList<>();
-        ret.addAll(players);
+        ret.addAll(seats);
         ret.addAll(viewers);
         return ret;
     }
 
+    /**
+     * 玩家离开房间
+     * @param socketId
+     * @return
+     */
     public Player playerLeave(String socketId) {
-        Optional<Player> player = players.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst();
+        Optional<Player> player = seats.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst();
         Optional<Player> viewer = viewers.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst();
         if (player.isPresent()) {
             player.get().clearPlayer();
@@ -92,16 +121,19 @@ public class Room {
         return null;
     }
 
+    /**
+     * 清除配置
+     */
     public void clearConfig() {
-        players.forEach(Player::resetConfig);
+        seats.forEach(Player::resetConfig);
         configList = new CopyOnWriteArrayList<>();
         config = false;
     }
 
     public RoomData baseInfo() {
-        long count = players.stream().filter(v -> v.getSocketId() != null).count();
+        long count = seats.stream().filter(v -> v.getSocketId() != null).count();
         RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer).setPlayerCount((int) count);
-        room.setPlayers(players.stream().map(Player::baseInfo).toList());
+        room.setPlayers(seats.stream().map(Player::baseInfo).toList());
         return room;
     }
 
@@ -125,15 +157,19 @@ public class Room {
     }
 
     public Room resetRoom() {
-        return resetActionList().resetSeed();
+        return resetFrameList().resetSeed();
     }
 
     public String getId() {
         return id;
     }
 
-    public Player getOwner() {
-        return owner;
+    public String getOwner() {
+        if (owner != null) {
+            return owner.getId();
+        } else {
+            return null;
+        }
     }
 
     public Room setOwner(Player owner) {
@@ -173,7 +209,7 @@ public class Room {
     }
 
     public List<Player> getPlayers() {
-        return players;
+        return seats;
     }
 
     public List<Player> getViewers() {
@@ -183,6 +219,10 @@ public class Room {
 
     public List<JsonObject> getFrameList() {
         return frameList;
+    }
+
+    public void appendFrame(JsonObject frame) {
+        frameList.add(frame);
     }
 
 
