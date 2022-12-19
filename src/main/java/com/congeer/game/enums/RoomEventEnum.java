@@ -1,16 +1,16 @@
 package com.congeer.game.enums;
 
-import com.congeer.game.strategy.RoomEvent;
-import com.congeer.game.strategy.event.HealthEvent;
-import com.congeer.game.strategy.event.room.AddRoomEvent;
-import com.congeer.game.strategy.event.room.ConfigRoomEvent;
-import com.congeer.game.strategy.event.room.LeaveRoomEvent;
-import com.congeer.game.strategy.event.room.LockSeatEvent;
-import com.congeer.game.strategy.event.room.ResetRoomEvent;
-import com.congeer.game.strategy.event.room.SeedAllotEvent;
-import com.congeer.game.strategy.event.room.SeedCreateEvent;
-import com.congeer.game.strategy.event.room.SyncFrameEvent;
-import com.congeer.game.strategy.event.room.UnlockSeatEvent;
+import com.congeer.game.event.RoomEvent;
+import com.congeer.game.event.base.HealthEvent;
+import com.congeer.game.event.room.AddRoomEvent;
+import com.congeer.game.event.room.ConfigRoomEvent;
+import com.congeer.game.event.room.LeaveRoomEvent;
+import com.congeer.game.event.room.LockSeatEvent;
+import com.congeer.game.event.room.ResetRoomEvent;
+import com.congeer.game.event.room.SeedAllotEvent;
+import com.congeer.game.event.room.SeedCreateEvent;
+import com.congeer.game.event.room.SyncFrameEvent;
+import com.congeer.game.event.room.UnlockSeatEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -18,7 +18,6 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RoomEventEnum implements IEventEnum {
 
-    HEALTH("h", "健康检查", HealthEvent.class),
     ADD_ROOM("ADD_ROOM", "进入房间", AddRoomEvent.class),
     LEAVE_ROOM("LEAVE_ROOM", "离开房间", LeaveRoomEvent.class),
     CONFIG_ROOM("CONFIG_ROOM", "设置房间", ConfigRoomEvent.class),

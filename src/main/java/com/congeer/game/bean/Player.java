@@ -1,6 +1,6 @@
 package com.congeer.game.bean;
 
-import com.congeer.game.strategy.model.PlayerData;
+import com.congeer.game.model.PlayerData;
 import io.vertx.core.json.JsonObject;
 
 import java.util.ArrayList;

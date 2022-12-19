@@ -1,6 +1,6 @@
 package com.congeer.game.enums;
 
-import com.congeer.game.strategy.AbstractEvent;
+import com.congeer.game.event.AbstractEvent;
 
 public interface IEventEnum {
 

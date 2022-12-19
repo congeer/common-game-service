@@ -3,6 +3,8 @@ package com.congeer.game;
 import com.congeer.game.Verticle.GameVerticle;
 import com.congeer.game.Verticle.RequestVerticle;
 import com.congeer.game.bean.BaseMessage;
+import com.congeer.game.model.GameStorage;
+import com.congeer.game.model.MapGameStorage;
 import com.congeer.game.bean.Result;
 import com.congeer.game.codec.BaseMessageCodec;
 import com.congeer.game.codec.ResultCodec;
@@ -22,6 +24,12 @@ public class Application {
     private static Vertx vert;
 
     private static RedisAPI redisAPI;
+
+    private final static GameStorage GAME_STORAGE = new MapGameStorage();
+
+    public static GameStorage getGame() {
+        return GAME_STORAGE;
+    }
 
     public static Vertx getVert() {
         return vert;

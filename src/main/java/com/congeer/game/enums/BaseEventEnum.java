@@ -1,7 +1,8 @@
 package com.congeer.game.enums;
 
-import com.congeer.game.strategy.GameEvent;
-import com.congeer.game.strategy.event.HealthEvent;
+import com.congeer.game.event.AbstractEvent;
+import com.congeer.game.event.RoomEvent;
+import com.congeer.game.event.base.HealthEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,6 +17,6 @@ public enum BaseEventEnum implements IEventEnum {
 
     private final String name;
 
-    private final Class<? extends GameEvent<?>> clz;
+    private final Class<? extends AbstractEvent<?>> clz;
 
 }

@@ -1,11 +1,10 @@
 package com.congeer.game.bean;
 
+import com.congeer.game.model.StringContext;
 import com.congeer.game.enums.ClientEventEnum;
-import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 
-import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.Arrays;
 
 public class BaseMessage {
 
@@ -62,11 +61,21 @@ public class BaseMessage {
     }
 
     public <E> E getData(Class<E> clz) {
-        if (clz == Void.class) {
-            return null;
+        if (data == null) {
+            try {
+                return clz.getDeclaredConstructor().newInstance();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
-        if (clz == String.class) {
-            return (E) data.toString();
+        if (Arrays.stream(clz.getInterfaces()).anyMatch(v -> v == StringContext.class)) {
+            try {
+                E e = clz.getDeclaredConstructor().newInstance();
+                ((StringContext) e).setData(data.toString());
+                return e;
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
         }
         return data.mapTo(clz);
     }

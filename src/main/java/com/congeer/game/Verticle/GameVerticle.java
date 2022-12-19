@@ -3,10 +3,8 @@ package com.congeer.game.Verticle;
 import com.congeer.game.enums.BaseEventEnum;
 import com.congeer.game.enums.LobbyEventEnum;
 import com.congeer.game.enums.RoomEventEnum;
-import com.congeer.game.strategy.GameEvent;
-import com.congeer.game.strategy.model.GameContext;
-import com.congeer.game.strategy.model.MapGameContext;
-import com.congeer.game.strategy.request.ServiceStatusRequest;
+import com.congeer.game.event.AbstractEvent;
+import com.congeer.game.request.base.ServiceStatusRequest;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.eventbus.EventBus;
 
@@ -16,8 +14,6 @@ import static com.congeer.game.bean.Constant.REQUEST_KEY;
 
 public class GameVerticle extends AbstractVerticle {
 
-    private final static GameContext GAME_CONTEXT = new MapGameContext();
-
     @Override
     public void start() throws Exception {
         System.out.println(Thread.currentThread().getName() + ", Start Worker...");
@@ -26,7 +22,7 @@ public class GameVerticle extends AbstractVerticle {
             if (value.getClz() == null) {
                 continue;
             }
-            GameEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance().context(GAME_CONTEXT);
+            AbstractEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance();
             String address = EVENT_KEY + GAME_KEY + value.getCode();
             eventBus.consumer(address, handler);
         }
@@ -34,7 +30,7 @@ public class GameVerticle extends AbstractVerticle {
             if (value.getClz() == null) {
                 continue;
             }
-            GameEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance().context(GAME_CONTEXT);
+            AbstractEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance();
             String address = EVENT_KEY + GAME_KEY + value.getCode();
             eventBus.consumer(address, handler);
         }
@@ -42,11 +38,11 @@ public class GameVerticle extends AbstractVerticle {
             if (value.getClz() == null) {
                 continue;
             }
-            GameEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance().context(GAME_CONTEXT);
+            AbstractEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance();
             String address = EVENT_KEY + GAME_KEY + value.getCode();
             eventBus.consumer(address, handler);
         }
-        eventBus.consumer(REQUEST_KEY + GAME_KEY + "STATUS", new ServiceStatusRequest().context(GAME_CONTEXT));
+        eventBus.consumer(REQUEST_KEY + GAME_KEY + "STATUS", new ServiceStatusRequest());
     }
 
 }

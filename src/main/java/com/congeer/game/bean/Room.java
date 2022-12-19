@@ -1,7 +1,7 @@
 package com.congeer.game.bean;
 
 
-import com.congeer.game.strategy.model.RoomData;
+import com.congeer.game.model.RoomData;
 import io.vertx.core.json.JsonObject;
 
 import java.util.ArrayList;

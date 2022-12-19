@@ -1,10 +1,11 @@
 package com.congeer.game.enums;
 
-import com.congeer.game.strategy.GameEvent;
-import com.congeer.game.strategy.event.lobby.RandomMatchEvent;
-import com.congeer.game.strategy.event.lobby.RoomListEvent;
+import com.congeer.game.event.AbstractEvent;
+import com.congeer.game.event.lobby.RandomMatchEvent;
+import com.congeer.game.event.lobby.RoomListEvent;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+
 
 @Getter
 @AllArgsConstructor
@@ -18,6 +19,6 @@ public enum LobbyEventEnum implements IEventEnum {
 
     private final String name;
 
-    private final Class<? extends GameEvent<?>> clz;
+    private final Class<? extends AbstractEvent<?>> clz;
 
 }
