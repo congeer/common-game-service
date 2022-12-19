@@ -18,15 +18,15 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum RoomEventEnum implements IEventEnum {
 
-    ADD_ROOM("ADD_ROOM", "进入房间", AddRoomEvent.class),
-    LEAVE_ROOM("LEAVE_ROOM", "离开房间", LeaveRoomEvent.class),
-    CONFIG_ROOM("CONFIG_ROOM", "设置房间", ConfigRoomEvent.class),
-    RESET_ROOM("RESET_ROOM", "重置房间", ResetRoomEvent.class),
-    SYNC_FRAME("SYNC_FRAME", "帧同步", SyncFrameEvent.class),
-    LOCK_SEAT("LOCK_SEAT", "锁定座位", LockSeatEvent.class),
-    UNLOCK_SEAT("UNLOCK_SEAT", "解锁座位", UnlockSeatEvent.class),
-    SEED_CREATE("SEED_CREATE", "生成种子", SeedCreateEvent.class),
-    SEED_ALLOT("SEED_ALLOT", "分配种子", SeedAllotEvent.class),
+    ADD_ROOM("add", "进入房间", AddRoomEvent.class),
+    LEAVE_ROOM("leave", "离开房间", LeaveRoomEvent.class),
+    CONFIG_ROOM("config", "设置房间", ConfigRoomEvent.class),
+    RESET_ROOM("reset", "重置房间", ResetRoomEvent.class),
+    SYNC_FRAME("frame.sync", "帧同步", SyncFrameEvent.class),
+    LOCK_SEAT("seat.lock", "锁定座位", LockSeatEvent.class),
+    UNLOCK_SEAT("seat.unlock", "解锁座位", UnlockSeatEvent.class),
+    SEED_CREATE("seed.create", "生成种子", SeedCreateEvent.class),
+    SEED_ALLOT("seed.allot", "分配种子", SeedAllotEvent.class),
     ;
 
     private final String code;

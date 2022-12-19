@@ -1,6 +1,5 @@
 package com.congeer.game.event.room;
 
-import com.congeer.game.Application;
 import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;

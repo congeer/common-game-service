@@ -11,8 +11,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum LobbyEventEnum implements IEventEnum {
 
-    ROOM_LIST("ROOM_LIST", "房间列表", RoomListEvent.class),
-    RANDOM_MATCH("RANDOM_MATCH", "随机匹配", RandomMatchEvent.class),
+    ROOM_LIST("list.room", "房间列表", RoomListEvent.class),
+    RANDOM_MATCH("match.random", "随机匹配", RandomMatchEvent.class),
     ;
 
     private final String code;

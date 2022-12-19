@@ -55,8 +55,8 @@ public class Application {
         vert = Vertx.vertx();
         vert.eventBus().registerDefaultCodec(BaseMessage.class, new BaseMessageCodec());
         vert.eventBus().registerDefaultCodec(Result.class, new ResultCodec());
-        vert.deployVerticle(new GameVerticle(), new DeploymentOptions().setWorker(true));
-        vert.deployVerticle(new RequestVerticle());
+        vert.deployVerticle(GameVerticle.class, new DeploymentOptions().setWorker(true).setInstances(1));
+        vert.deployVerticle(RequestVerticle.class, new DeploymentOptions());
         Redis client = Redis.createClient(
             vert,
             "redis://192.168.64.6:6379/0");

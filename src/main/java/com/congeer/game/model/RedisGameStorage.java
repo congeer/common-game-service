@@ -11,9 +11,6 @@ import io.vertx.redis.client.RedisAPI;
 
 public class RedisGameStorage extends GameStorage {
 
-    private final String ROOM_KEY = "room/";
-    private final String SOCKET_KEY = "socket/";
-
     public RedisAPI getRedis() {
         return Application.getRedis();
     }
@@ -46,7 +43,7 @@ public class RedisGameStorage extends GameStorage {
     }
 
     @Override
-    public void addSocket(String socketId, String roomId) {
+    public void addSocket(String socketId, Player player) {
     }
 
     @Override

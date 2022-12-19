@@ -9,7 +9,7 @@ public abstract class GameStorage {
 
     public abstract void updateRoom(Room room);
 
-    public abstract void addSocket(String socketId, String roomId);
+    public abstract void addSocket(String socketId, Player player);
 
     public abstract Room getRoomBySocketId(String socketId);
 

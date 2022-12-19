@@ -10,9 +10,7 @@ public class MapGameStorage extends GameStorage {
 
     private final Map<String, Room> roomMap = new ConcurrentHashMap<>();
 
-    private final Map<String, String> socketRoom = new ConcurrentHashMap<>();
-
-    private final Map<String, Long> socketAlive = new ConcurrentHashMap<>();
+    private final Map<String, Player> playerMap = new ConcurrentHashMap<>();
 
     @Override
     public boolean containsRoom(String roomId) {
@@ -20,8 +18,8 @@ public class MapGameStorage extends GameStorage {
     }
 
     @Override
-    public void addSocket(String socketId, String roomId) {
-        socketRoom.put(socketId, roomId);
+    public void addSocket(String socketId, Player player) {
+        playerMap.put(socketId, player);
     }
 
     @Override
@@ -31,7 +29,11 @@ public class MapGameStorage extends GameStorage {
 
     @Override
     public Room getRoomBySocketId(String socketId) {
-        String roomId = socketRoom.get(socketId);
+        Player player = playerMap.get(socketId);
+        if (player == null) {
+            return null;
+        }
+        String roomId = player.getWhere();
         if (roomId == null) {
             return null;
         }
@@ -54,22 +56,25 @@ public class MapGameStorage extends GameStorage {
 
     @Override
     public void removeSocket(String socketId) {
-        socketRoom.remove(socketId);
-        socketAlive.remove(socketId);
+        playerMap.remove(socketId);
     }
 
     @Override
     public GameStatus getStatus() {
         GameStatus status = new GameStatus();
         status.setRoomCount(roomMap.size());
-        status.setSocketCount(socketRoom.size());
+        status.setPlayerCount(playerMap.size());
         status.setRoomList(roomMap.values().stream().toList());
+        status.setPlayerList(playerMap.values().stream().toList());
         return status;
     }
 
     @Override
     public void setSocketAlive(String socketId) {
-        socketAlive.put(socketId, System.nanoTime());
+        Player player = playerMap.get(socketId);
+        if (player != null) {
+            player.setLastUpdateTime(System.currentTimeMillis());
+        }
     }
 
 }

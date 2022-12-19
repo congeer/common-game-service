@@ -10,7 +10,9 @@ import io.vertx.core.eventbus.EventBus;
 
 import static com.congeer.game.bean.Constant.EVENT_KEY;
 import static com.congeer.game.bean.Constant.GAME_KEY;
+import static com.congeer.game.bean.Constant.LOBBY_KEY;
 import static com.congeer.game.bean.Constant.REQUEST_KEY;
+import static com.congeer.game.bean.Constant.ROOM_KEY;
 
 public class GameVerticle extends AbstractVerticle {
 
@@ -31,7 +33,7 @@ public class GameVerticle extends AbstractVerticle {
                 continue;
             }
             AbstractEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance();
-            String address = EVENT_KEY + GAME_KEY + value.getCode();
+            String address = EVENT_KEY + GAME_KEY + ROOM_KEY + value.getCode();
             eventBus.consumer(address, handler);
         }
         for (LobbyEventEnum value : LobbyEventEnum.values()) {
@@ -39,7 +41,7 @@ public class GameVerticle extends AbstractVerticle {
                 continue;
             }
             AbstractEvent<?> handler = value.getClz().getDeclaredConstructor().newInstance();
-            String address = EVENT_KEY + GAME_KEY + value.getCode();
+            String address = EVENT_KEY + GAME_KEY + LOBBY_KEY + value.getCode();
             eventBus.consumer(address, handler);
         }
         eventBus.consumer(REQUEST_KEY + GAME_KEY + "STATUS", new ServiceStatusRequest());

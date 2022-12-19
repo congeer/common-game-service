@@ -2,11 +2,12 @@ package com.congeer.game.model;
 
 import com.congeer.game.Application;
 import com.congeer.game.bean.BaseMessage;
+import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 
 import static com.congeer.game.enums.ClientEventEnum.ERROR;
 
-public abstract class RoomContext extends EventContext {
+public class RoomContext extends EventContext {
 
     protected Room room;
 
@@ -36,8 +37,11 @@ public abstract class RoomContext extends EventContext {
     public void updateRoom() {
         GameStorage gameStorage = Application.getGame();
         getRoom();
-        gameStorage.addSocket(socketId, room.getId());
-        gameStorage.setSocketAlive(socketId);
+        Player player = room.getPlayer(socketId);
+        if (player != null) {
+            gameStorage.addSocket(socketId, player);
+            gameStorage.setSocketAlive(socketId);
+        }
         room.setLastUpdateTime(System.currentTimeMillis());
         gameStorage.updateRoom(room);
     }
@@ -46,8 +50,11 @@ public abstract class RoomContext extends EventContext {
         GameStorage gameStorage = Application.getGame();
         this.room = room;
         if (!gameStorage.containsRoom(room.getId())) {
-            gameStorage.addSocket(socketId, room.getId());
-            gameStorage.setSocketAlive(socketId);
+            Player player = room.getPlayer(socketId);
+            if (player != null) {
+                gameStorage.addSocket(socketId, player);
+                gameStorage.setSocketAlive(socketId);
+            }
             gameStorage.updateRoom(room);
         } else {
             reply(new BaseMessage(ERROR));
