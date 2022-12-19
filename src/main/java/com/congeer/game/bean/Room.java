@@ -4,6 +4,8 @@ package com.congeer.game.bean;
 import com.congeer.game.model.RoomData;
 import io.vertx.core.json.JsonObject;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +14,10 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Room {
+public class Room implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public Room(String id) {
         this.id = id;
@@ -44,10 +49,10 @@ public class Room {
     private final List<Player> viewers = new CopyOnWriteArrayList<>();
 
     // 存储的帧列表
-    private List<JsonObject> frameList = new CopyOnWriteArrayList<>();
+    private List<String> frameList = new CopyOnWriteArrayList<>();
 
     // 存储的设置列表
-    private List<JsonObject> configList = new CopyOnWriteArrayList<>();
+    private List<String> configList = new CopyOnWriteArrayList<>();
 
     /**
      * 设置房间的初始化玩家信息
@@ -217,16 +222,16 @@ public class Room {
     }
 
 
-    public List<JsonObject> getFrameList() {
+    public List<String> getFrameList() {
         return frameList;
     }
 
-    public void appendFrame(JsonObject frame) {
+    public void appendFrame(String frame) {
         frameList.add(frame);
     }
 
 
-    public List<JsonObject> getConfigList() {
+    public List<String> getConfigList() {
         return configList;
     }
 

@@ -22,20 +22,20 @@ public class ConfigRoomEvent extends RoomEvent<ConfigRoomContext> {
         room.clearConfig();
         room.setMaxPlayer(context.getMaxPlayer());
         room.configPlayer();
-        List<List<JsonObject>> playerConfig = context.getPlayerConfig();
+        List<List<String>> playerConfig = context.getPlayerConfig();
         for (int i = 0; i < playerConfig.size(); i++) {
-            List<JsonObject> jsonObjects = playerConfig.get(i);
+            List<String> jsonObjects = playerConfig.get(i);
             Player player = room.getPlayers().get(i);
-            for (JsonObject config : jsonObjects) {
+            for (String config : jsonObjects) {
                 player.getConfigList().add(config);
                 if (player.getSocketId() != null) {
                     context.sendTo(player.getSocketId(), new BaseMessage(SYNC_CONFIG, config));
                 }
             }
         }
-        List<JsonObject> baseConfig = context.getBaseConfig();
+        List<String> baseConfig = context.getBaseConfig();
         for (int i = 0; i < baseConfig.size(); i++) {
-            JsonObject config = baseConfig.get(i);
+            String config = baseConfig.get(i);
             room.getConfigList().add(config);
             context.radio(new BaseMessage(SYNC_CONFIG, config));
         }

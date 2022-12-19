@@ -5,9 +5,12 @@ import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
+import io.vertx.core.impl.SerializableUtils;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.sync.Sync;
 import io.vertx.redis.client.Command;
 import io.vertx.redis.client.RedisAPI;
+import io.vertx.redis.client.Response;
 
 public class RedisGameStorage extends GameStorage {
 
@@ -15,31 +18,19 @@ public class RedisGameStorage extends GameStorage {
         return Application.getRedis();
     }
 
-    public <T> void redisGet(String key, Class<T> clz, Handler<T> handler) {
-        Promise<T> promise = Promise.promise();
-        promise.complete();
-        getRedis().get(key, result->{
-            if (result.succeeded()) {
-                String str = result.result().toString();
-                JsonObject json = new JsonObject(str);
-                T t = json.mapTo(clz);
-                handler.handle(t);
-                getRedis().send(Command.SET, key, JsonObject.mapFrom(t).toString());
-            }
-        });
+    public Response syncRedis(Command cmd, String ...key) {
+        return Sync.awaitResult(h -> getRedis().send(cmd, key).onComplete(h));
     }
 
     @Override
     public boolean containsRoom(String roomId) {
-        redisGet(roomId, Room.class, room->{
-
-        });
-        return false;
+        Response response = syncRedis(Command.GET, roomId);
+        return response != null;
     }
 
     @Override
     public void updateRoom(Room room) {
-
+        getRedis().send(Command.SET, new String(SerializableUtils.toBytes(room)));
     }
 
     @Override

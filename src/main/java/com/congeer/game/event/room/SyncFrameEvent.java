@@ -16,7 +16,7 @@ public class SyncFrameEvent extends RoomEvent<RoomStringContext> {
     @Override
     protected void handleRoom(RoomStringContext context) {
         Room room = context.getRoom();
-        room.appendFrame(new JsonObject(context.getData()));
+        room.appendFrame(context.getData());
         context.updateRoom();
         context.radio(new BaseMessage(SYNC_FRAME, context.getData()));
     }

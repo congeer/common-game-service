@@ -6,7 +6,6 @@ import com.congeer.game.bean.Room;
 import com.congeer.game.event.RoomEvent;
 import com.congeer.game.model.AddRoomContext;
 import com.congeer.game.model.SeedContext;
-import io.vertx.core.json.JsonObject;
 
 import java.util.List;
 import java.util.Map;
@@ -53,12 +52,12 @@ public class AddRoomEvent extends RoomEvent<AddRoomContext> {
             context.radio(new BaseMessage(JOIN_PLAYER, player.baseInfo()));
 
             // 1、同步全局配置
-            for (JsonObject config : room.getConfigList()) {
+            for (String config : room.getConfigList()) {
                 context.reply(new BaseMessage(SYNC_CONFIG, config));
             }
             // 2、同步玩家配置
             if (!player.getConfigList().isEmpty()) {
-                for (JsonObject config : player.getConfigList()) {
+                for (String config : player.getConfigList()) {
                     context.reply(new BaseMessage(SYNC_CONFIG, config));
                 }
             }
@@ -70,7 +69,7 @@ public class AddRoomEvent extends RoomEvent<AddRoomContext> {
                 context.reply(new BaseMessage(SYNC_SEED, seed));
             }
             // 4、同步所有操作
-            for (JsonObject action : room.getFrameList()) {
+            for (String action : room.getFrameList()) {
                 context.reply(new BaseMessage(SYNC_FRAME, action));
             }
         }

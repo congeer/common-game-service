@@ -3,11 +3,16 @@ package com.congeer.game.bean;
 import com.congeer.game.model.PlayerData;
 import io.vertx.core.json.JsonObject;
 
+import java.io.Serial;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Player {
+public class Player implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
 
     public Player() {
         this.lastUpdateTime = System.currentTimeMillis();
@@ -36,7 +41,7 @@ public class Player {
 
     private Room where;
 
-    private List<JsonObject> configList = new ArrayList<>();
+    private List<String> configList = new ArrayList<>();
 
     public String getId() {
         return id;
@@ -83,7 +88,7 @@ public class Player {
         return this;
     }
 
-    public Player setConfigList(List<JsonObject> configList) {
+    public Player setConfigList(List<String> configList) {
         this.configList = configList;
         return this;
     }
@@ -97,7 +102,7 @@ public class Player {
         return this;
     }
 
-    public List<JsonObject> getConfigList() {
+    public List<String> getConfigList() {
         return configList;
     }
 
