@@ -2,6 +2,7 @@ package com.congeer.game.model;
 
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
+import io.vertx.core.Future;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -13,12 +14,8 @@ public class MapGameStorage extends GameStorage {
     private final Map<String, Player> playerMap = new ConcurrentHashMap<>();
 
     @Override
-    public boolean containsRoom(String roomId) {
-        return roomMap.containsKey(roomId);
-    }
-
-    @Override
     public void addSocket(String socketId, Player player) {
+        player.setLastUpdateTime(System.currentTimeMillis());
         playerMap.put(socketId, player);
     }
 
@@ -28,30 +25,22 @@ public class MapGameStorage extends GameStorage {
     }
 
     @Override
-    public Room getRoomBySocketId(String socketId) {
+    public Future<Player> getPlayerBySocketId(String socketId) {
         Player player = playerMap.get(socketId);
         if (player == null) {
-            return null;
+            return Future.failedFuture("not exist");
         }
-        String roomId = player.getWhere();
-        if (roomId == null) {
-            return null;
-        }
-        return roomMap.get(roomId);
+        return Future.succeededFuture(player);
     }
 
     @Override
-    public Player getPlayerBySocketId(String socketId) {
-        Room room = getRoomBySocketId(socketId);
-        if (room == null) {
-            return null;
+    public Future<Room> getRoom(String roomId) {
+        Room result = roomMap.get(roomId);
+        if (result !=null) {
+            return Future.succeededFuture(result);
+        } else {
+            return Future.failedFuture("not exist");
         }
-        return room.getPlayer(socketId);
-    }
-
-    @Override
-    public Room getRoom(String roomId) {
-        return roomMap.get(roomId);
     }
 
     @Override
@@ -60,13 +49,13 @@ public class MapGameStorage extends GameStorage {
     }
 
     @Override
-    public GameStatus getStatus() {
+    public Future<GameStatus> getStatus() {
         GameStatus status = new GameStatus();
         status.setRoomCount(roomMap.size());
         status.setPlayerCount(playerMap.size());
         status.setRoomList(roomMap.values().stream().toList());
         status.setPlayerList(playerMap.values().stream().toList());
-        return status;
+        return Future.succeededFuture(status);
     }
 
     @Override

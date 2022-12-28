@@ -3,14 +3,17 @@ package com.congeer.game.model;
 import com.congeer.game.Application;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
-import io.vertx.core.Handler;
-import io.vertx.core.Promise;
-import io.vertx.core.impl.SerializableUtils;
-import io.vertx.core.json.JsonObject;
-import io.vertx.ext.sync.Sync;
+import io.vertx.core.CompositeFuture;
+import io.vertx.core.Future;
 import io.vertx.redis.client.Command;
 import io.vertx.redis.client.RedisAPI;
-import io.vertx.redis.client.Response;
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.util.ArrayList;
+import java.util.Base64;
+
+import static com.congeer.game.bean.Constant.ROOM_KEY;
+import static com.congeer.game.bean.Constant.SOCKET_KEY;
 
 public class RedisGameStorage extends GameStorage {
 
@@ -18,55 +21,61 @@ public class RedisGameStorage extends GameStorage {
         return Application.getRedis();
     }
 
-    public Response syncRedis(Command cmd, String ...key) {
-        return Sync.awaitResult(h -> getRedis().send(cmd, key).onComplete(h));
-    }
-
-    @Override
-    public boolean containsRoom(String roomId) {
-        Response response = syncRedis(Command.GET, roomId);
-        return response != null;
-    }
-
     @Override
     public void updateRoom(Room room) {
-        getRedis().send(Command.SET, new String(SerializableUtils.toBytes(room)));
+        byte[] serialize = SerializationUtils.serialize(room);
+        String s = Base64.getEncoder().encodeToString(serialize);
+        getRedis().send(Command.HSET, ROOM_KEY, room.getId(), s);
     }
 
     @Override
     public void addSocket(String socketId, Player player) {
+        byte[] serialize = SerializationUtils.serialize(player);
+        String s = Base64.getEncoder().encodeToString(serialize);
+        getRedis().send(Command.HSET, SOCKET_KEY, socketId, s);
     }
 
     @Override
-    public Room getRoomBySocketId(String socketId) {
-        return null;
+    public Future<Player> getPlayerBySocketId(String socketId) {
+        return getRedis().send(Command.HGET, SOCKET_KEY, socketId)
+            .compose(response -> Future.succeededFuture(decode(response.toBytes())));
+    }
+
+    private static <T> T decode(byte[] bytes) {
+        return SerializationUtils.deserialize(Base64.getDecoder().decode(bytes));
     }
 
     @Override
-    public Player getPlayerBySocketId(String socketId) {
-        Room room = getRoomBySocketId(socketId);
-        if (room == null) {
-            return null;
-        }
-        return room.getPlayer(socketId);
-    }
-
-    @Override
-    public Room getRoom(String roomId) {
-        return null;
+    public Future<Room> getRoom(String roomId) {
+        return getRedis().send(Command.HGET, ROOM_KEY, roomId)
+            .compose(response -> Future.succeededFuture(decode(response.toBytes())));
     }
 
     @Override
     public void removeSocket(String socketId) {
+        getRedis().send(Command.HDEL, SOCKET_KEY, socketId);
     }
 
     @Override
-    public GameStatus getStatus() {
+    public Future<GameStatus> getStatus() {
         GameStatus status = new GameStatus();
-//        status.setRoomCount(roomMap.size());
-//        status.setSocketCount(socketRoom.size());
-//        status.setRoomList(roomMap.values().stream().toList());
-        return status;
+        Future<GameStatus> compose1 = getRedis().hgetall(ROOM_KEY).compose(response -> {
+            status.setRoomCount(response.size());
+            status.setRoomList(new ArrayList<>());
+            for (String key : response.getKeys()) {
+                status.getRoomList().add(decode(response.get(key).toBytes()));
+            }
+            return Future.succeededFuture(status);
+        });
+        Future<GameStatus> compose2 = getRedis().hgetall(SOCKET_KEY).compose(response -> {
+            status.setPlayerCount(response.size());
+            status.setPlayerList(new ArrayList<>());
+            for (String key : response.getKeys()) {
+                status.getPlayerList().add(decode(response.get(key).toBytes()));
+            }
+            return Future.succeededFuture(status);
+        });
+        return CompositeFuture.all(compose1, compose2).compose(resp -> Future.succeededFuture(status));
     }
 
     @Override

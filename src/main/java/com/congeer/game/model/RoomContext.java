@@ -12,9 +12,6 @@ public class RoomContext extends EventContext {
     protected Room room;
 
     public Room getRoom() {
-        if (room == null) {
-            room = Application.getGame().getRoomBySocketId(socketId);
-        }
         return room;
     }
 
@@ -28,19 +25,20 @@ public class RoomContext extends EventContext {
     }
 
     public void radio(BaseMessage msg, boolean excludeSelf) {
-        if (getRoom() != null) {
-            room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !excludeSelf || !v.getSocketId()
-                .equals(socketId)).forEach(v -> notice(v.getSocketId(), msg));
-        }
+        room.allPlayer().stream().filter(v -> v.getSocketId() != null).filter(v -> !excludeSelf
+            || !v.getSocketId()
+            .equals(socketId)).forEach(v -> notice(v.getSocketId(), msg));
+    }
+
+    private void radioRoom(Room room, BaseMessage msg, boolean excludeSelf) {
+
     }
 
     public void updateRoom() {
         GameStorage gameStorage = Application.getGame();
-        getRoom();
         Player player = room.getPlayer(socketId);
         if (player != null) {
             gameStorage.addSocket(socketId, player);
-            gameStorage.setSocketAlive(socketId);
         }
         room.setLastUpdateTime(System.currentTimeMillis());
         gameStorage.updateRoom(room);
@@ -49,16 +47,16 @@ public class RoomContext extends EventContext {
     public void createRoom(Room room) {
         GameStorage gameStorage = Application.getGame();
         this.room = room;
-        if (!gameStorage.containsRoom(room.getId())) {
+        gameStorage.getRoom(room.getId()).onFailure(cause -> {
             Player player = room.getPlayer(socketId);
             if (player != null) {
                 gameStorage.addSocket(socketId, player);
-                gameStorage.setSocketAlive(socketId);
             }
+            room.setLastUpdateTime(System.currentTimeMillis());
             gameStorage.updateRoom(room);
-        } else {
+        }).onSuccess(r -> {
             reply(new BaseMessage(ERROR));
-        }
+        });
     }
 
 }

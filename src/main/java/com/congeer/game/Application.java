@@ -8,6 +8,7 @@ import com.congeer.game.model.MapGameStorage;
 import com.congeer.game.bean.Result;
 import com.congeer.game.codec.BaseMessageCodec;
 import com.congeer.game.codec.ResultCodec;
+import com.congeer.game.model.RedisGameStorage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,7 +26,7 @@ public class Application {
 
     private static RedisAPI redisAPI;
 
-    private final static GameStorage GAME_STORAGE = new MapGameStorage();
+    private final static GameStorage GAME_STORAGE = new RedisGameStorage();
 
     public static GameStorage getGame() {
         return GAME_STORAGE;

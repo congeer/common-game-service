@@ -1,11 +1,11 @@
 package com.congeer.game.event.room;
 
 import com.congeer.game.bean.BaseMessage;
-import com.congeer.game.model.ConfigRoomContext;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.event.RoomEvent;
-import io.vertx.core.json.JsonObject;
+import com.congeer.game.model.ConfigRoomContext;
+import io.vertx.core.Future;
 
 import java.util.List;
 

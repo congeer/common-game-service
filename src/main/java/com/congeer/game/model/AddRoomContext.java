@@ -1,9 +1,6 @@
 package com.congeer.game.model;
 
 
-import com.congeer.game.Application;
-import com.congeer.game.bean.Room;
-
 public class AddRoomContext extends RoomContext {
 
     private String playerId;
@@ -17,13 +14,6 @@ public class AddRoomContext extends RoomContext {
     public AddRoomContext setPlayerId(String playerId) {
         this.playerId = playerId;
         return this;
-    }
-
-    public Room getRoom() {
-        if (room == null) {
-            room = Application.getGame().getRoom(roomId);
-        }
-        return room;
     }
 
     public String getRoomId() {
