@@ -12,5 +12,8 @@ public class Constant {
 
     public static final String LOBBY_KEY = "lobby.";
 
+    public static final String SOCKET_KEY = "socket.";
+
+
 
 }
