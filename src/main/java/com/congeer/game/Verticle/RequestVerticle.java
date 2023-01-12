@@ -8,7 +8,6 @@ import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.http.ServerWebSocket;
-import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 
 import static com.congeer.game.bean.Constant.EVENT_KEY;

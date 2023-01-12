@@ -4,10 +4,10 @@ import com.congeer.game.Verticle.GameVerticle;
 import com.congeer.game.Verticle.RequestVerticle;
 import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.model.GameStorage;
-import com.congeer.game.model.MapGameStorage;
 import com.congeer.game.bean.Result;
 import com.congeer.game.codec.BaseMessageCodec;
 import com.congeer.game.codec.ResultCodec;
+import com.congeer.game.model.MapGameStorage;
 import com.congeer.game.model.RedisGameStorage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -26,10 +26,10 @@ public class Application {
 
     private static RedisAPI redisAPI;
 
-    private final static GameStorage GAME_STORAGE = new RedisGameStorage();
+    private static GameStorage gameStorage;
 
     public static GameStorage getGame() {
-        return GAME_STORAGE;
+        return gameStorage;
     }
 
     public static Vertx getVert() {
@@ -58,12 +58,15 @@ public class Application {
         vert.eventBus().registerDefaultCodec(Result.class, new ResultCodec());
         vert.deployVerticle(GameVerticle.class, new DeploymentOptions().setWorker(true).setInstances(1));
         vert.deployVerticle(RequestVerticle.class, new DeploymentOptions());
+        String redisUrl = "redis://192.168.64.10:6379/0";
         Redis client = Redis.createClient(
             vert,
-            "redis://192.168.64.6:6379/0");
+            redisUrl);
         client.connect().onSuccess(conn -> {
+            gameStorage = new RedisGameStorage();
             System.out.println("redis start success...");
         }).onFailure(info -> {
+            gameStorage = new MapGameStorage();
             System.out.println("redis start failed...");
         });
         redisAPI = RedisAPI.api(client);
