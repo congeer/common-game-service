@@ -1,5 +1,8 @@
 package com.congeer.game.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlayerData {
 
     private String id;
@@ -15,6 +18,8 @@ public class PlayerData {
     private boolean online;
 
     private int index = -1;
+
+    private List<String> configList;
 
     public String getId() {
         return id;
@@ -76,6 +81,15 @@ public class PlayerData {
 
     public PlayerData setOnline(boolean online) {
         this.online = online;
+        return this;
+    }
+
+    public List<String> getConfigList() {
+        return configList;
+    }
+
+    public PlayerData setConfigList(List<String> configList) {
+        this.configList = configList;
         return this;
     }
 

@@ -70,15 +70,18 @@ public class Room implements Serializable {
 
     /**
      * 获取房间的一个玩家
+     *
      * @param socketId
      * @return
      */
     public Player getPlayer(String socketId) {
-        return seats.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst().orElse(null);
+        Player viewer = viewers.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst().orElse(null);
+        return seats.stream().filter(v -> socketId.equals(v.getSocketId())).findFirst().orElse(viewer);
     }
 
     /**
      * 获取一个空位置
+     *
      * @param playerId
      * @return
      */
@@ -94,6 +97,7 @@ public class Room implements Serializable {
 
     /**
      * 重制房间帧
+     *
      * @return
      */
     public Room resetFrameList() {
@@ -110,6 +114,7 @@ public class Room implements Serializable {
 
     /**
      * 玩家离开房间
+     *
      * @param socketId
      * @return
      */

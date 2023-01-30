@@ -58,7 +58,7 @@ public class Application {
         vert.eventBus().registerDefaultCodec(Result.class, new ResultCodec());
         vert.deployVerticle(GameVerticle.class, new DeploymentOptions().setWorker(true).setInstances(1));
         vert.deployVerticle(RequestVerticle.class, new DeploymentOptions());
-        String redisUrl = "redis://192.168.64.10:6379/0";
+        String redisUrl = "redis://redis:6379/0";
         Redis client = Redis.createClient(
             vert,
             redisUrl);

@@ -143,7 +143,7 @@ public class Player implements Serializable {
 
     public PlayerData baseInfo() {
         return new PlayerData().setId(id).setOnline(socketId != null).setLock(lock).setOwner(owner).setPlayer(player)
-            .setIndex(index);
+            .setIndex(index).setConfigList(configList);
     }
 
 }

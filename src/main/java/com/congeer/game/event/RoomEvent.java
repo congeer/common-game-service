@@ -15,10 +15,10 @@ public abstract class RoomEvent<T extends RoomContext> extends AbstractEvent<T> 
         }).compose(c -> {
             handleRoom(context);
             return Future.succeededFuture(context);
-        }).recover(throwable -> {
+        }).onSuccess(RoomContext::updateRoom).recover(throwable -> {
             handleEmpty(context);
             return Future.succeededFuture(context);
-        }).onSuccess(RoomContext::updateRoom);
+        });
     }
 
     protected Future<Room> getRoom(T context) {
