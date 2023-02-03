@@ -1,6 +1,6 @@
 package com.congeer.game.bean;
 
-import com.congeer.game.model.StringContext;
+import com.congeer.game.model.context.StringContext;
 import com.congeer.game.enums.ClientEventEnum;
 import io.vertx.core.json.JsonObject;
 

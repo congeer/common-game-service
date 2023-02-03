@@ -2,7 +2,7 @@ package com.congeer.game.event.room;
 
 import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Room;
-import com.congeer.game.model.RoomContext;
+import com.congeer.game.model.context.RoomContext;
 import com.congeer.game.event.RoomEvent;
 
 import static com.congeer.game.enums.ClientEventEnum.RESET_ROOM;

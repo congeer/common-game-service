@@ -2,7 +2,7 @@ package com.congeer.game.event.room;
 
 import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Room;
-import com.congeer.game.model.SeedContext;
+import com.congeer.game.model.context.SeedContext;
 import com.congeer.game.enums.ClientEventEnum;
 import com.congeer.game.event.RoomEvent;
 

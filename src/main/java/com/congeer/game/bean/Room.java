@@ -21,11 +21,14 @@ public class Room implements Serializable {
 
     public Room(String id) {
         this.id = id;
-        this.lastUpdateTime = System.nanoTime();
+        this.lastUpdateTime = System.currentTimeMillis();
     }
 
     // 房间id
     private final String id;
+
+    // 房间标签
+    private String tag;
 
     // 房间拥有人
     private Player owner;
@@ -142,7 +145,7 @@ public class Room implements Serializable {
 
     public RoomData baseInfo() {
         long count = seats.stream().filter(v -> v.getSocketId() != null).count();
-        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer).setPlayerCount((int) count);
+        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer).setPlayerCount((int) count).setTag(tag);
         room.setPlayers(seats.stream().map(Player::baseInfo).toList());
         return room;
     }
@@ -172,6 +175,15 @@ public class Room implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public Room setTag(String tag) {
+        this.tag = tag;
+        return this;
     }
 
     public String getOwner() {
@@ -238,6 +250,10 @@ public class Room implements Serializable {
 
     public List<String> getConfigList() {
         return configList;
+    }
+
+    public boolean expire() {
+        return lastUpdateTime + 12 * 60 * 60 * 1000 < System.currentTimeMillis();
     }
 
 }

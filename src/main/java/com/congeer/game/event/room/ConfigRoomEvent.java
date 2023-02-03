@@ -4,8 +4,7 @@ import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.event.RoomEvent;
-import com.congeer.game.model.ConfigRoomContext;
-import io.vertx.core.Future;
+import com.congeer.game.model.context.ConfigRoomContext;
 
 import java.util.List;
 
@@ -21,6 +20,12 @@ public class ConfigRoomEvent extends RoomEvent<ConfigRoomContext> {
         Room room = context.getRoom();
         room.clearConfig();
         room.setMaxPlayer(context.getMaxPlayer());
+        List<String> baseConfig = context.getBaseConfig();
+        for (int i = 0; i < baseConfig.size(); i++) {
+            String config = baseConfig.get(i);
+            room.getConfigList().add(config);
+            context.radio(new BaseMessage(SYNC_CONFIG, config), false);
+        }
         room.configPlayer();
         List<List<String>> playerConfig = context.getPlayerConfig();
         for (int i = 0; i < playerConfig.size(); i++) {
@@ -32,12 +37,6 @@ public class ConfigRoomEvent extends RoomEvent<ConfigRoomContext> {
                     context.sendTo(player.getSocketId(), new BaseMessage(SYNC_CONFIG, config));
                 }
             }
-        }
-        List<String> baseConfig = context.getBaseConfig();
-        for (int i = 0; i < baseConfig.size(); i++) {
-            String config = baseConfig.get(i);
-            room.getConfigList().add(config);
-            context.radio(new BaseMessage(SYNC_CONFIG, config));
         }
         room.setConfig(true);
     }

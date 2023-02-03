@@ -146,4 +146,8 @@ public class Player implements Serializable {
             .setIndex(index).setConfigList(configList);
     }
 
+    public boolean expire() {
+        return lastUpdateTime + 5 * 60 * 1000 < System.currentTimeMillis();
+    }
+
 }

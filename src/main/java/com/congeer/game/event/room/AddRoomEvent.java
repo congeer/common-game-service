@@ -5,10 +5,9 @@ import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.event.RoomEvent;
-import com.congeer.game.model.AddRoomContext;
-import com.congeer.game.model.SeedContext;
+import com.congeer.game.model.context.AddRoomContext;
+import com.congeer.game.model.context.SeedContext;
 import io.vertx.core.Future;
-import io.vertx.core.Promise;
 
 import java.util.List;
 import java.util.Map;

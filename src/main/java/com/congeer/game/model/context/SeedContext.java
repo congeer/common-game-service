@@ -1,4 +1,4 @@
-package com.congeer.game.model;
+package com.congeer.game.model.context;
 
 import java.util.ArrayList;
 import java.util.List;

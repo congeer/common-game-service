@@ -1,4 +1,4 @@
-package com.congeer.game.model;
+package com.congeer.game.model.context;
 
 public class RoomStringContext extends RoomContext implements StringContext {
 

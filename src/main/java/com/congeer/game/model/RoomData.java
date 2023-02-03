@@ -6,6 +6,8 @@ public class RoomData {
 
     private String id;
 
+    private String tag;
+
     private Integer maxPlayer;
 
     private Integer playerCount;
@@ -18,6 +20,15 @@ public class RoomData {
 
     public RoomData setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public RoomData setTag(String tag) {
+        this.tag = tag;
         return this;
     }
 

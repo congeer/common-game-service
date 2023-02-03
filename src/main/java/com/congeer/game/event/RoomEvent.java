@@ -2,7 +2,7 @@ package com.congeer.game.event;
 
 import com.congeer.game.Application;
 import com.congeer.game.bean.Room;
-import com.congeer.game.model.RoomContext;
+import com.congeer.game.model.context.RoomContext;
 import io.vertx.core.Future;
 
 public abstract class RoomEvent<T extends RoomContext> extends AbstractEvent<T> {

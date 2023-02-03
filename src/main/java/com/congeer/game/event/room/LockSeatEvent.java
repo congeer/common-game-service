@@ -1,6 +1,6 @@
 package com.congeer.game.event.room;
 
-import com.congeer.game.model.LockContext;
+import com.congeer.game.model.context.LockContext;
 import com.congeer.game.bean.Room;
 import com.congeer.game.event.RoomEvent;
 

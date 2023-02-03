@@ -1,7 +1,7 @@
 package com.congeer.game.event;
 
 import com.congeer.game.bean.BaseMessage;
-import com.congeer.game.model.EventContext;
+import com.congeer.game.model.context.EventContext;
 import io.vertx.core.Handler;
 import io.vertx.core.eventbus.Message;
 

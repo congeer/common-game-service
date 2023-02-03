@@ -3,12 +3,12 @@ package com.congeer.game;
 import com.congeer.game.Verticle.GameVerticle;
 import com.congeer.game.Verticle.RequestVerticle;
 import com.congeer.game.bean.BaseMessage;
-import com.congeer.game.model.GameStorage;
+import com.congeer.game.model.storage.GameStorage;
 import com.congeer.game.bean.Result;
 import com.congeer.game.codec.BaseMessageCodec;
 import com.congeer.game.codec.ResultCodec;
-import com.congeer.game.model.MapGameStorage;
-import com.congeer.game.model.RedisGameStorage;
+import com.congeer.game.model.storage.MapGameStorage;
+import com.congeer.game.model.storage.RedisGameStorage;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -70,6 +70,11 @@ public class Application {
             System.out.println("redis start failed...");
         });
         redisAPI = RedisAPI.api(client);
+        long timerID = vert.setPeriodic(60 * 1000, id -> {
+            if (gameStorage != null) {
+                gameStorage.clearExpire();
+            }
+        });
     }
 
 }

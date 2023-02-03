@@ -45,9 +45,22 @@ public class RequestVerticle extends AbstractVerticle {
                 BaseMessage message = buffer.toJsonObject().mapTo(BaseMessage.class).setSocketId(socketId);
                 eventBus.send(EVENT_KEY + GAME_KEY + message.getType(), message);
             }).closeHandler(handler -> {
+                System.out.println("close");
+                BaseMessage message = new BaseMessage().setSocketId(socketId)
+                    .setType(RoomEventEnum.LEAVE_ROOM.getCode());
+                eventBus.send(EVENT_KEY + GAME_KEY + ROOM_KEY + message.getType(), message);
             }).exceptionHandler(handler -> {
+                System.out.println("exception");
+                BaseMessage message = new BaseMessage().setSocketId(socketId)
+                    .setType(RoomEventEnum.LEAVE_ROOM.getCode());
+                eventBus.send(EVENT_KEY + GAME_KEY + ROOM_KEY + message.getType(), message);
             }).drainHandler(handler -> {
+                System.out.println("drain");
+                BaseMessage message = new BaseMessage().setSocketId(socketId)
+                    .setType(RoomEventEnum.LEAVE_ROOM.getCode());
+                eventBus.send(EVENT_KEY + GAME_KEY + ROOM_KEY + message.getType(), message);
             }).endHandler(handler -> {
+                System.out.println("end");
                 BaseMessage message = new BaseMessage().setSocketId(socketId)
                     .setType(RoomEventEnum.LEAVE_ROOM.getCode());
                 eventBus.send(EVENT_KEY + GAME_KEY + ROOM_KEY + message.getType(), message);

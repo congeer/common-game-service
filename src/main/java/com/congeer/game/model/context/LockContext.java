@@ -1,6 +1,6 @@
-package com.congeer.game.model;
+package com.congeer.game.model.context;
 
-public class LockContext extends RoomContext{
+public class LockContext extends RoomContext {
 
     boolean all;
 

@@ -1,4 +1,4 @@
-package com.congeer.game.model;
+package com.congeer.game.model.context;
 
 import com.congeer.game.Application;
 import com.congeer.game.bean.BaseMessage;

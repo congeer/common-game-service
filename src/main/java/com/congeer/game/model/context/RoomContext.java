@@ -1,9 +1,10 @@
-package com.congeer.game.model;
+package com.congeer.game.model.context;
 
 import com.congeer.game.Application;
 import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
+import com.congeer.game.model.storage.GameStorage;
 
 import static com.congeer.game.enums.ClientEventEnum.ERROR;
 
@@ -30,15 +31,11 @@ public class RoomContext extends EventContext {
             .equals(socketId)).forEach(v -> notice(v.getSocketId(), msg));
     }
 
-    private void radioRoom(Room room, BaseMessage msg, boolean excludeSelf) {
-
-    }
-
     public void updateRoom() {
         GameStorage gameStorage = Application.getGame();
         Player player = room.getPlayer(socketId);
         if (player != null) {
-            gameStorage.addSocket(socketId, player);
+            gameStorage.saveSocket(socketId, player);
         }
         room.setLastUpdateTime(System.currentTimeMillis());
         gameStorage.updateRoom(room);
@@ -50,10 +47,10 @@ public class RoomContext extends EventContext {
         gameStorage.getRoom(room.getId()).onFailure(cause -> {
             Player player = room.getPlayer(socketId);
             if (player != null) {
-                gameStorage.addSocket(socketId, player);
+                gameStorage.saveSocket(socketId, player);
             }
             room.setLastUpdateTime(System.currentTimeMillis());
-            gameStorage.updateRoom(room);
+            gameStorage.saveRoom(room);
         }).onSuccess(r -> {
             reply(new BaseMessage(ERROR));
         });
