@@ -9,19 +9,17 @@ public abstract class RoomEvent<T extends RoomContext> extends AbstractEvent<T> 
 
     @Override
     protected void handleData(T context) {
-        getRoom(context).compose(room -> {
+        Room room = getRoom(context);
+        if (room != null) {
             context.setRoom(room);
-            return Future.succeededFuture(context);
-        }).compose(c -> {
             handleRoom(context);
-            return Future.succeededFuture(context);
-        }).onSuccess(RoomContext::updateRoom).recover(throwable -> {
+            context.updateRoom();
+        } else {
             handleEmpty(context);
-            return Future.succeededFuture(context);
-        });
+        }
     }
 
-    protected Future<Room> getRoom(T context) {
+    protected Room getRoom(T context) {
         return Application.getGame().getRoomBySocketId(context.getSocketId());
     }
 

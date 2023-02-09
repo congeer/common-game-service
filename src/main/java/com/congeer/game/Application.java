@@ -3,10 +3,10 @@ package com.congeer.game;
 import com.congeer.game.Verticle.GameVerticle;
 import com.congeer.game.Verticle.RequestVerticle;
 import com.congeer.game.bean.BaseMessage;
-import com.congeer.game.model.storage.GameStorage;
 import com.congeer.game.bean.Result;
 import com.congeer.game.codec.BaseMessageCodec;
 import com.congeer.game.codec.ResultCodec;
+import com.congeer.game.model.storage.GameStorage;
 import com.congeer.game.model.storage.MapGameStorage;
 import com.congeer.game.model.storage.RedisGameStorage;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -17,14 +17,14 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.jackson.DatabindCodec;
-import io.vertx.redis.client.Redis;
-import io.vertx.redis.client.RedisAPI;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
 
 public class Application {
 
     private static Vertx vert;
 
-    private static RedisAPI redisAPI;
+    private static JedisPool jedisPool;
 
     private static GameStorage gameStorage;
 
@@ -40,8 +40,8 @@ public class Application {
         return vert.eventBus();
     }
 
-    public static RedisAPI getRedis() {
-        return redisAPI;
+    public static Jedis getRedis() {
+        return jedisPool.getResource();
     }
 
     public static void configJackson() {
@@ -59,17 +59,16 @@ public class Application {
         vert.deployVerticle(GameVerticle.class, new DeploymentOptions().setWorker(true).setInstances(1));
         vert.deployVerticle(RequestVerticle.class, new DeploymentOptions());
         String redisUrl = "redis://redis:6379/0";
-        Redis client = Redis.createClient(
-            vert,
-            redisUrl);
-        client.connect().onSuccess(conn -> {
+        JedisPool pool = new JedisPool(redisUrl);
+        jedisPool = pool;
+        try (Jedis test = pool.getResource()) {
+            test.ping();
             gameStorage = new RedisGameStorage();
             System.out.println("redis start success...");
-        }).onFailure(info -> {
+        } catch (Exception e) {
             gameStorage = new MapGameStorage();
             System.out.println("redis start failed...");
-        });
-        redisAPI = RedisAPI.api(client);
+        }
         long timerID = vert.setPeriodic(60 * 1000, id -> {
             if (gameStorage != null) {
                 gameStorage.clearExpire();

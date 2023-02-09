@@ -3,9 +3,6 @@ package com.congeer.game.model.storage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.model.GameStatus;
-import io.vertx.codegen.annotations.Nullable;
-import io.vertx.core.Future;
-import io.vertx.redis.client.Response;
 
 import java.util.Iterator;
 import java.util.Map;
@@ -24,9 +21,8 @@ public class MapGameStorage extends GameStorage {
     }
 
     @Override
-    public Future<@Nullable Response> saveRoom(Room room) {
+    public void saveRoom(Room room) {
         roomMap.put(room.getId(), room);
-        return null;
     }
 
     @Override
@@ -35,22 +31,13 @@ public class MapGameStorage extends GameStorage {
     }
 
     @Override
-    public Future<Player> getPlayerBySocketId(String socketId) {
-        Player player = playerMap.get(socketId);
-        if (player == null) {
-            return Future.failedFuture("not exist");
-        }
-        return Future.succeededFuture(player);
+    public Player getPlayerBySocketId(String socketId) {
+        return playerMap.get(socketId);
     }
 
     @Override
-    public Future<Room> getRoom(String roomId) {
-        Room result = roomMap.get(roomId);
-        if (result != null) {
-            return Future.succeededFuture(result);
-        } else {
-            return Future.failedFuture("not exist");
-        }
+    public Room getRoom(String roomId) {
+        return roomMap.get(roomId);
     }
 
     @Override
@@ -59,13 +46,13 @@ public class MapGameStorage extends GameStorage {
     }
 
     @Override
-    public Future<GameStatus> getStatus() {
+    public GameStatus getStatus() {
         GameStatus status = new GameStatus();
         status.setRoomCount(roomMap.size());
         status.setPlayerCount(playerMap.size());
         status.setRoomList(roomMap.values().stream().toList());
         status.setPlayerList(playerMap.values().stream().toList());
-        return Future.succeededFuture(status);
+        return status;
     }
 
     @Override

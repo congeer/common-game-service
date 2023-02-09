@@ -25,7 +25,7 @@ import static com.congeer.game.enums.ClientEventEnum.SYNC_SEED;
 public class AddRoomEvent extends RoomEvent<AddRoomContext> {
 
     @Override
-    protected Future<Room> getRoom(AddRoomContext context) {
+    protected Room getRoom(AddRoomContext context) {
         return Application.getGame().getRoom(context.getRoomId());
     }
 

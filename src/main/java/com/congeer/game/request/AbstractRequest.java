@@ -10,15 +10,10 @@ public abstract class AbstractRequest<T, R> implements Handler<Message<T>> {
     @Override
     public void handle(Message<T> event) {
         T body = event.body();
-        handleBody(body).onComplete(resp -> {
-            if (resp.succeeded()) {
-                event.reply(new Result<>(resp.result()));
-            } else {
-                event.reply(new Result<>("400", resp.cause().getMessage()));
-            }
-        });
+        R resp = handleBody(body);
+        event.reply(new Result<>(resp));
     }
 
-    protected abstract Future<R> handleBody(T body);
+    protected abstract R handleBody(T body);
 
 }

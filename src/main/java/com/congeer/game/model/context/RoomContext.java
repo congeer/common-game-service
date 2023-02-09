@@ -5,6 +5,7 @@ import com.congeer.game.bean.BaseMessage;
 import com.congeer.game.bean.Player;
 import com.congeer.game.bean.Room;
 import com.congeer.game.model.storage.GameStorage;
+import io.vertx.core.Promise;
 
 import static com.congeer.game.enums.ClientEventEnum.ERROR;
 
@@ -44,16 +45,19 @@ public class RoomContext extends EventContext {
     public void createRoom(Room room) {
         GameStorage gameStorage = Application.getGame();
         this.room = room;
-        gameStorage.getRoom(room.getId()).onFailure(cause -> {
+        Promise<Void> promise = Promise.promise();
+        Room tmp = gameStorage.getRoom(room.getId());
+        if (tmp == null) {
             Player player = room.getPlayer(socketId);
             if (player != null) {
                 gameStorage.saveSocket(socketId, player);
             }
             room.setLastUpdateTime(System.currentTimeMillis());
             gameStorage.saveRoom(room);
-        }).onSuccess(r -> {
+        } else {
             reply(new BaseMessage(ERROR));
-        });
+            promise.fail("has room");
+        }
     }
 
 }
