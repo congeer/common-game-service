@@ -17,6 +17,7 @@ import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.eventbus.EventBus;
 import io.vertx.core.json.jackson.DatabindCodec;
+import org.apache.commons.lang3.StringUtils;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -58,7 +59,10 @@ public class Application {
         vert.eventBus().registerDefaultCodec(Result.class, new ResultCodec());
         vert.deployVerticle(GameVerticle.class, new DeploymentOptions().setWorker(true).setInstances(1));
         vert.deployVerticle(RequestVerticle.class, new DeploymentOptions());
-        String redisUrl = "redis://redis:6379/0";
+        String redisUrl = System.getenv("REDIS_URL");
+        if (StringUtils.isBlank(redisUrl)) {
+            redisUrl = "redis://redis:6379/0";
+        }
         JedisPool pool = new JedisPool(redisUrl);
         jedisPool = pool;
         try (Jedis test = pool.getResource()) {

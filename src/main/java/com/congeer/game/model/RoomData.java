@@ -6,7 +6,9 @@ public class RoomData {
 
     private String id;
 
-    private String tag;
+    private String module;
+
+    private List<String> tags;
 
     private Integer maxPlayer;
 
@@ -23,12 +25,21 @@ public class RoomData {
         return this;
     }
 
-    public String getTag() {
-        return tag;
+    public String getModule() {
+        return module;
     }
 
-    public RoomData setTag(String tag) {
-        this.tag = tag;
+    public RoomData setModule(String module) {
+        this.module = module;
+        return this;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public RoomData setTags(List<String> tags) {
+        this.tags = tags;
         return this;
     }
 

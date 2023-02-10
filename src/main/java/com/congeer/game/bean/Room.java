@@ -27,8 +27,10 @@ public class Room implements Serializable {
     // 房间id
     private final String id;
 
+    private String module;
+
     // 房间标签
-    private String tag;
+    private List<String> tags;
 
     // 房间拥有人
     private Player owner;
@@ -145,7 +147,7 @@ public class Room implements Serializable {
 
     public RoomData baseInfo() {
         long count = seats.stream().filter(v -> v.getSocketId() != null).count();
-        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer).setPlayerCount((int) count).setTag(tag);
+        RoomData room = new RoomData().setId(id).setMaxPlayer(maxPlayer).setPlayerCount((int) count).setTags(tags).setModule(module);
         room.setPlayers(seats.stream().map(Player::baseInfo).toList());
         return room;
     }
@@ -177,12 +179,21 @@ public class Room implements Serializable {
         return id;
     }
 
-    public String getTag() {
-        return tag;
+    public String getModule() {
+        return module;
     }
 
-    public Room setTag(String tag) {
-        this.tag = tag;
+    public Room setModule(String module) {
+        this.module = module;
+        return this;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public Room setTags(List<String> tags) {
+        this.tags = tags;
         return this;
     }
 

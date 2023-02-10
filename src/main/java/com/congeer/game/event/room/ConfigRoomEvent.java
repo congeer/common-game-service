@@ -19,6 +19,8 @@ public class ConfigRoomEvent extends RoomEvent<ConfigRoomContext> {
     protected void handleRoom(ConfigRoomContext context) {
         Room room = context.getRoom();
         room.clearConfig();
+        room.setModule(context.getModule());
+        room.setTags(context.getTags());
         room.setMaxPlayer(context.getMaxPlayer());
         List<String> baseConfig = context.getBaseConfig();
         for (String config : baseConfig) {
