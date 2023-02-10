@@ -20,6 +20,10 @@ public class SeedCreateEvent extends RoomEvent<SeedContext> {
         }
         Room room = context.getRoom();
         room.setSeed(context.getCode(), result);
+    }
+
+    @Override
+    protected void replyData(SeedContext context) {
         context.radio(new BaseMessage(ClientEventEnum.SYNC_SEED, context), false);
     }
 

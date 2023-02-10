@@ -69,7 +69,7 @@ public class Application {
             gameStorage = new MapGameStorage();
             System.out.println("redis start failed...");
         }
-        long timerID = vert.setPeriodic(60 * 1000, id -> {
+        vert.setPeriodic(60 * 1000, id -> {
             if (gameStorage != null) {
                 gameStorage.clearExpire();
             }

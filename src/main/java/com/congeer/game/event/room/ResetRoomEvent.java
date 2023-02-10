@@ -19,4 +19,9 @@ public class ResetRoomEvent extends RoomEvent<RoomContext> {
         context.radio(new BaseMessage(RESET_ROOM), false);
     }
 
+    @Override
+    protected void replyData(RoomContext context) {
+
+    }
+
 }

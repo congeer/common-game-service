@@ -14,6 +14,7 @@ public abstract class RoomEvent<T extends RoomContext> extends AbstractEvent<T> 
             context.setRoom(room);
             handleRoom(context);
             context.updateRoom();
+            replyData(context);
         } else {
             handleEmpty(context);
         }
@@ -24,6 +25,8 @@ public abstract class RoomEvent<T extends RoomContext> extends AbstractEvent<T> 
     }
 
     protected abstract void handleRoom(T context);
+
+    protected abstract void replyData(T context);
 
     protected void handleEmpty(T context) {
 

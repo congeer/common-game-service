@@ -20,4 +20,9 @@ public class LockSeatEvent extends RoomEvent<LockContext> {
         }
     }
 
+    @Override
+    protected void replyData(LockContext context) {
+
+    }
+
 }

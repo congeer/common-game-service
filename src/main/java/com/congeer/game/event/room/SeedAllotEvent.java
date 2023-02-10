@@ -19,6 +19,11 @@ public class SeedAllotEvent extends RoomEvent<RoomContext> {
 //            }
 //            data.setIndex(room.pullSeed(data.getCode()));
 //        }
+    }
+
+    @Override
+    protected void replyData(RoomContext context) {
+
         context.radio(new BaseMessage(ClientEventEnum.SEED_ALLOTTED), false);
     }
 

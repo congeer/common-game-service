@@ -16,6 +16,10 @@ public class SyncFrameEvent extends RoomEvent<RoomStringContext> {
     protected void handleRoom(RoomStringContext context) {
         Room room = context.getRoom();
         room.appendFrame(context.getData());
+    }
+
+    @Override
+    protected void replyData(RoomStringContext context) {
         context.radio(new BaseMessage(SYNC_FRAME, context.getData()));
     }
 

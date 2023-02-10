@@ -41,6 +41,12 @@ public class AddRoomEvent extends RoomEvent<AddRoomContext> {
             player = new Player(playerId, socketId).setWhere(room);
             room.getViewers().add(player);
         }
+    }
+
+    @Override
+    protected void replyData(AddRoomContext context) {
+        Room room = context.getRoom();
+        Player player = room.getPlayer(context.getSocketId());
         // 告诉玩家自己的状态
         context.reply(new BaseMessage(CONNECTED, player.baseInfo()
             .setCreate(player.isOwner() && !room.isConfig())));
